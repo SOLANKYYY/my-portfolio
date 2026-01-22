@@ -237,7 +237,7 @@
             </div>
         </section>
 
-        <!-- About Me -->
+        <!-- About Me + Quick Facts -->
         <section id="about" class="py-32">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="spotlight-card rounded-3xl p-8 md:p-12 flex flex-col md:flex-row gap-12 reveal">
@@ -264,25 +264,24 @@
                         <h2 class="text-4xl font-heading font-bold text-white mb-6 flex items-center gap-3">
                             About Me <i data-lucide="sparkles" class="text-neonCyan w-6 h-6 animate-pulse"></i>
                         </h2>
+                        
+                        <!-- Bio -->
                         <div class="space-y-6 text-lg text-gray-300 font-light leading-relaxed">
                             <p>
                                 Highly motivated and versatile <span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-neonCyan to-neonViolet animate-gradient-text bg-[length:200%_200%]">Artificial Intelligence & Machine Learning (AIML)</span> undergraduate at <span class="text-white font-medium border-b border-white/20 pb-0.5">Jain University</span>, currently maintaining a distinguished <span class="text-neonCyan font-bold">8.7 SGPA</span>. As a <span class="italic text-gray-100">first-generation college student</span>, I am driven by a passion for bridging the gap between sophisticated data-driven logic and intuitive user experiences.
                             </p>
                             <p>
-                                I am seeking an entry-level position as a <span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-neonViolet to-neonCyan animate-gradient-text bg-[length:200%_200%]">Junior Machine Learning Developer</span> or <span class="font-bold text-white">Full-Stack AI Engineer</span>, where I can deploy my technical expertise in <span class="text-neonCyan font-medium">predictive modeling</span> (Pandas, Scikit-learn, SVM) alongside my proficiency in modern <span class="text-neonViolet font-medium">front-end engineering</span> and UI/UX architecture.
-                            </p>
-                            <p>
-                                My goal is to engineer high-performance, intelligent systems that are not only technologically superior but also <span class="border-b border-neonCyan/50 text-white hover:text-neonCyan transition-colors">aesthetically refined</span> and <span class="border-b border-neonViolet/50 text-white hover:text-neonViolet transition-colors">user-centric</span>.
+                                I am seeking an entry-level position as a <span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-neonViolet to-neonCyan animate-gradient-text bg-[length:200%_200%]">Junior Machine Learning Developer</span> or <span class="font-bold text-white">Full-Stack AI Engineer</span>, where I can deploy my technical expertise in <span class="text-neonCyan font-medium">predictive modeling</span> alongside proficiency in modern <span class="text-neonViolet font-medium">front-end engineering</span>.
                             </p>
                         </div>
 
-                        <!-- NEW: Personal Details & Languages Grid -->
+                        <!-- Quick Facts & Languages Grid -->
                         <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
                             
                             <!-- Personal Details -->
                             <div class="p-5 rounded-xl bg-white/5 border border-white/10 hover:border-neonCyan/30 transition-all hover:-translate-y-1">
                                 <h3 class="text-neonCyan font-heading font-bold mb-4 text-xs uppercase tracking-widest flex items-center gap-2">
-                                    <i data-lucide="user" class="w-4 h-4"></i> Personal Details
+                                    <i data-lucide="user" class="w-4 h-4"></i> Quick Facts
                                 </h3>
                                 <div class="space-y-4">
                                     <div class="flex items-start gap-4">
@@ -728,6 +727,21 @@
 
     <!-- SCRIPTS -->
     <script>
+        // --- FIX: FORCE SCROLL TO TOP ON LOAD ---
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        } else {
+            window.onbeforeunload = function () {
+                window.scrollTo(0, 0);
+            }
+        }
+        window.onload = function() {
+            setTimeout(function() {
+                window.scrollTo(0, 0);
+            }, 10);
+        };
+        // ----------------------------------------
+
         // Init Lucide Icons
         lucide.createIcons();
 
