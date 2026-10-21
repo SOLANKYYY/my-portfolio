@@ -1,78 +1,39 @@
-# Solanki Om Narendra — Portfolio
+# Om Solanki — Portfolio
 
-A production-grade, component-based portfolio built with **Vite + React + Tailwind CSS + Framer Motion + Lucide React**.
+A light-theme personal portfolio built with React 18, Vite, CSS, and Lucide icons. Features selected work, project filters, education, experience, a résumé link, and a contact form.
 
-## Stack
+## Develop and build
 
-- **Vite** — build tooling / dev server
-- **React 18** — component architecture
-- **Tailwind CSS** — utility-first styling, themed to the brand palette
-- **Framer Motion** — scroll reveals, stagger animations, layout transitions
-- **Lucide React** — icon set
-
-## Getting started
-
-```bash
-npm install
+```sh
+npm ci
 npm run dev
-```
-
-Then open the printed local URL (default `http://localhost:5173`).
-
-## Build for production
-
-```bash
 npm run build
 npm run preview
 ```
 
-The production build is emitted to `dist/`.
+Vercel settings: framework **Vite**, build command **npm run build**, output directory **dist**, production branch **main**. The custom domain must be assigned to a Vercel project connected to this repository for pushes to update it.
 
-## Project structure
+## Updating content
 
-```
-├── index.html
-├── package.json
-├── vite.config.js
-├── tailwind.config.js
-├── postcss.config.js
-├── public/
-│   ├── profile.jpg
-│   └── resume.pdf
-└── src/
-    ├── main.jsx
-    ├── App.jsx
-    ├── index.css
-    ├── data/
-    │   └── portfolio.js       # all content lives here
-    └── components/
-        ├── Navbar.jsx
-        ├── Hero.jsx
-        ├── NeuralBackground.jsx
-        ├── About.jsx
-        ├── Education.jsx
-        ├── Skills.jsx
-        ├── Experience.jsx
-        ├── Projects.jsx
-        ├── Contact.jsx
-        └── Footer.jsx
-```
+- `src/data/work.js`: featured projects, repository/demo links, additional projects, and skills.
+- `src/data/portfolio.js`: original profile, education, experience, hackathons, contact endpoint, and social links. Legacy components and their old content exports remain for reference but are not rendered by the new app.
+- `src/App.jsx`: page structure, introduction/about copy, filtering, navigation, and form behavior.
+- `src/index.css`: responsive light theme and project illustrations.
+- `public/profile.jpg` and `public/resume.pdf`: existing photo and résumé.
+- `index.html`: title, description, canonical URL, and sharing metadata.
 
-## Brand tokens (`tailwind.config.js`)
+Project descriptions are based on their repositories. Medical-image projects are research demonstrations; no clinical performance claims are made. Abstract project artwork is illustrative, not a screenshot of the applications.
 
-| Token          | Hex       | Use                            |
-|----------------|-----------|---------------------------------|
-| `page`         | `#FAFAFA` | Page background                |
-| `charcoalDark` | `#1A1A1A` | Headings / primary text         |
-| `charcoal`     | `#333333` | Body text                       |
-| `gold`         | `#C5A059` | Primary accent / gradients      |
-| `gold-dark`    | `#B8860B` | Hover states / darker accents   |
-| `gold-light`   | `#E8D5A5` | Subtle highlights / gradients   |
+## Opening animation
 
-## Notes
+`src/components/Intro.jsx` implements a numerical field that dissolves into Om's name, inspired by [CODING-DARSH/Portfolio](https://github.com/CODING-DARSH/Portfolio). This is an original implementation; no source or assets were copied from that repository, which had no license file at inspection.
 
-- All copy (bio, education, skills, experience, projects) lives in `src/data/portfolio.js` — edit that file to update content without touching components.
-- The **LeetCode Solutions & DSA Repository** project card currently points to a placeholder GitHub URL (`github.com/SOLANKYYY/leetcode-dsa-solutions`) — update the `github` field for that entry in `src/data/portfolio.js` with your real repository link.
-- The contact form posts to the same Formspree endpoint as the original site (`https://formspree.io/f/mdalbzlw`).
-- `NeuralBackground.jsx` uses `requestAnimationFrame`, a debounced `ResizeObserver` (150ms), squared-distance math to avoid unnecessary `sqrt` calls, a capped particle count, and respects `prefers-reduced-motion`.
-- Card and nav animations use only `transform`/`opacity` (Framer Motion) so they stay on the GPU compositor thread instead of forcing layout recalculation.
+The intro lasts approximately 3.4 seconds, plays once per browser-tab session, can be skipped with the button or Escape, and can be replayed from the footer. Reduced-motion preferences skip it. Animation frames, listeners, and scroll locking are cleaned up on exit.
+
+## Contact
+
+The form retains the existing Formspree endpoint. It has explicit labels, browser validation, a request timeout, and success/error feedback. The email link works independently. Local QA uses intercepted responses and does not send test messages to the owner; production delivery depends on the existing Formspree account configuration.
+
+## Verification
+
+Production build and browser checks cover layouts at 320, 390, 768, and 1440 pixels; intro completion/skip/replay; reduced motion; session persistence; mobile navigation; project filters; photo/résumé loading; and mocked contact success/failure. No JavaScript runtime errors were observed during those checks.

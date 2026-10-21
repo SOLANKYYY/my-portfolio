@@ -1,33 +1,596 @@
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import About from './components/About'
-import Education from './components/Education'
-import Skills from './components/Skills'
-import Experience from './components/Experience'
-import Projects from './components/Projects'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
-import CursorAura from './components/CursorAura'
-import AmbientMesh from './components/AmbientMesh'
+import { useState } from "react";
+import {
+  ArrowUpRight,
+  ArrowDown,
+  Github,
+  Linkedin,
+  Download,
+  Menu,
+  X,
+  MapPin,
+  ArrowRight,
+} from "lucide-react";
+import {
+  profile,
+  education,
+  experience,
+  hackathons,
+  contact,
+} from "./data/portfolio";
+import { selectedProjects, moreProjects, skills } from "./data/work";
+import Intro from "./components/Intro";
 
-export default function App() {
+const links = [
+  ["Work", "projects"],
+  ["About", "about"],
+  ["Experience", "experience"],
+  ["Contact", "contact"],
+];
+function External({ href, children, ...props }) {
   return (
-    <div className="relative flex min-h-screen flex-col overflow-x-hidden">
-      <AmbientMesh />
-      <CursorAura />
-      <div className="relative z-10 flex min-h-screen flex-col">
-        <Navbar />
-        <main className="flex-grow">
-          <Hero />
-          <About />
-          <Education />
-          <Skills />
-          <Experience />
-          <Projects />
-          <Contact />
-        </main>
-        <Footer />
+    <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+      {children}
+    </a>
+  );
+}
+function SectionTitle({ number, label, title, children }) {
+  return (
+    <div className="section-title">
+      <div>
+        <p className="eyebrow">
+          {number} / {label}
+        </p>
+        <h2>{title}</h2>
       </div>
+      {children}
     </div>
-  )
+  );
+}
+function ProjectArt({ kind }) {
+  return (
+    <div className={`project-art art-${kind}`} aria-hidden="true">
+      {kind === "retina" && (
+        <>
+          <div className="orbital-eye">
+            <i />
+            <b />
+          </div>
+          <span className="art-caption">IMAGE → MODEL → EXPLANATION</span>
+        </>
+      )}
+      {kind === "signal" && (
+        <>
+          <div className="signal-window">
+            <div className="window-top">
+              <span /> SIGNAL DESK <small>INTELLIGENCE</small>
+            </div>
+            <div className="signal-layout">
+              <div className="signal-sidebar">
+                Feed
+                <br />
+                Reports
+                <br />
+                Evidence
+              </div>
+              <div className="signal-lines">
+                <strong>Follow the evidence.</strong>
+                <i />
+                <i />
+                <i />
+                <div>
+                  <span>REPORTS</span>
+                  <span>ENTITIES</span>
+                  <span>REVIEW</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <span className="art-caption">COLLECT · INVESTIGATE · REVIEW</span>
+        </>
+      )}
+      {kind === "flat" && (
+        <>
+          <div className="meal-paper">
+            <span>THIS WEEK AT HOME</span>
+            <h4>
+              A little more
+              <br />
+              in sync.
+            </h4>
+            <div>
+              <b>M</b>
+              <b>T</b>
+              <b>W</b>
+              <b>T</b>
+              <b>F</b>
+            </div>
+            <p>Meals planned. Duties shared.</p>
+          </div>
+          <div className="meal-dot" />
+          <span className="art-caption">FLAT & FORK / SHARED LIVING</span>
+        </>
+      )}
+      {kind === "agri" && (
+        <>
+          <div className="agri-lines">
+            {[36, 63, 48, 85, 58, 94, 72].map((h, i) => (
+              <div key={i} style={{ height: `${h}%` }}>
+                <i />
+              </div>
+            ))}
+          </div>
+          <span className="agri-label">
+            Same soil.
+            <br />
+            <em>Different reasoning.</em>
+          </span>
+          <span className="art-caption">AGRILENS / LOCAL LLM BENCHMARK</span>
+        </>
+      )}
+      {kind === "lung" && (
+        <>
+          <div className="lung-grid">
+            <div />
+            <div />
+            <span>+</span>
+          </div>
+          <span className="art-caption">LUNGLENS / RESEARCH PROTOTYPE</span>
+        </>
+      )}
+    </div>
+  );
+}
+function ContactForm() {
+  const [status, setStatus] = useState("idle");
+  async function submit(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    setStatus("sending");
+    const controller = new AbortController(),
+      timeout = setTimeout(() => controller.abort(), 15000);
+    try {
+      const response = await fetch(contact.formEndpoint, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+        signal: controller.signal,
+      });
+      if (!response.ok) throw new Error("Request failed");
+      form.reset();
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+  return (
+    <form className="contact-form" onSubmit={submit}>
+      <div className="form-row">
+        <label>
+          Your name
+          <input
+            name="name"
+            autoComplete="name"
+            required
+            placeholder="Alex Taylor"
+            maxLength={120}
+          />
+        </label>
+        <label>
+          Email address
+          <input
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            placeholder="alex@example.com"
+          />
+        </label>
+      </div>
+      <label>
+        What do you have in mind?
+        <textarea
+          name="message"
+          required
+          rows={4}
+          maxLength={5000}
+          placeholder="A project, an opportunity, or just a hello…"
+        />
+      </label>
+      <button className="button primary" disabled={status === "sending"}>
+        {status === "sending" ? "Sending…" : "Send message"}
+        <ArrowUpRight size={18} />
+      </button>
+      <p className={`form-status ${status}`} role="status">
+        {status === "success"
+          ? "Thanks! Your message has been sent."
+          : status === "error"
+            ? `Couldn't send your message. Please email ${profile.email} instead.`
+            : ""}
+      </p>
+    </form>
+  );
+}
+export default function App() {
+  const [menu, setMenu] = useState(false),
+    [filter, setFilter] = useState("All"),
+    [introKey, setIntroKey] = useState(0);
+  const [intro, setIntro] = useState(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+      return false;
+    try {
+      return !sessionStorage.getItem("om-intro-seen");
+    } catch {
+      return true;
+    }
+  });
+  function finishIntro() {
+    setIntro(false);
+    try {
+      sessionStorage.setItem("om-intro-seen", "1");
+    } catch {
+      /* Storage may be unavailable. */
+    }
+  }
+  const shown =
+    filter === "All"
+      ? selectedProjects
+      : selectedProjects.filter((p) => p.category === filter);
+  return (
+    <>
+      {intro && <Intro key={introKey} onDone={finishIntro} />}
+      <div inert={intro ? "" : undefined}>
+        <a className="skip-link" href="#main">
+          Skip to content
+        </a>
+        <header className="site-header">
+          <div className="container nav-wrap">
+            <a className="wordmark" href="#home" aria-label="Om Solanki home">
+              om<span>.</span>
+            </a>
+            <button
+              className="menu-toggle"
+              aria-label={menu ? "Close navigation" : "Open navigation"}
+              aria-expanded={menu}
+              aria-controls="main-nav"
+              onClick={() => setMenu(!menu)}
+            >
+              {menu ? <X /> : <Menu />}
+            </button>
+            <nav
+              id="main-nav"
+              className={menu ? "nav open" : "nav"}
+              aria-label="Main navigation"
+            >
+              {links.map(([label, id]) => (
+                <a key={id} href={`#${id}`} onClick={() => setMenu(false)}>
+                  {label}
+                  {id === "contact" && <ArrowUpRight size={15} />}
+                </a>
+              ))}
+            </nav>
+            <a
+              className="nav-resume"
+              href={profile.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Résumé <Download size={15} />
+            </a>
+          </div>
+        </header>
+        <main id="main">
+          <section id="home" className="container hero">
+            <div className="hero-copy">
+              <p className="eyebrow">
+                <span className="status-dot" /> AI & ML UNDERGRADUATE ·
+                BENGALURU
+              </p>
+              <h1>
+                Curious mind.
+                <br />
+                Thoughtful code.
+                <br />
+                <span>Useful things.</span>
+              </h1>
+              <p className="hero-description">
+                Hi, I’m <strong>Om Solanki.</strong> I explore machine learning,
+                build for the web, and turn ideas into software people can
+                actually use.
+              </p>
+              <div className="hero-actions">
+                <a className="button primary" href="#projects">
+                  Explore my work <ArrowDown size={17} />
+                </a>
+                <a className="text-link" href={`mailto:${profile.email}`}>
+                  Let’s talk <ArrowUpRight size={17} />
+                </a>
+              </div>
+              <div className="hero-socials">
+                <External href={profile.socials.github}>
+                  <Github size={17} /> GitHub
+                </External>
+                <External href={profile.socials.linkedin}>
+                  <Linkedin size={17} /> LinkedIn
+                </External>
+                <span className="hero-location">
+                  <MapPin size={15} /> Bengaluru, India
+                </span>
+              </div>
+            </div>
+            <div className="portrait-composition">
+              <span className="portrait-index">
+                01 / THE PERSON BEHIND THE CODE
+              </span>
+              <div className="portrait-frame">
+                <img
+                  src={profile.photo}
+                  alt="Solanki Om Narendra"
+                  fetchPriority="high"
+                />
+                <span className="portrait-corner">
+                  OM
+                  <br />
+                  SOLANKI
+                </span>
+              </div>
+              <div className="portrait-note">
+                <span className="asterisk">✳</span>
+                <p>
+                  Always learning.
+                  <br />
+                  <strong>Always building.</strong>
+                </p>
+                <span className="note-arrow">↗</span>
+              </div>
+            </div>
+          </section>
+          <div className="focus-strip">
+            <div className="container">
+              <span>EXPLORING THE INTERSECTION OF</span>
+              <p>
+                Machine learning <i /> Computer vision <i /> Software
+                engineering
+              </p>
+            </div>
+          </div>
+          <section id="projects" className="container section">
+            <SectionTitle
+              number="01"
+              label="SELECTED WORK"
+              title="Ideas, put into practice."
+            >
+              <p>
+                A selection of research prototypes and practical applications.
+                <br />
+                Built to learn. Documented to share.
+              </p>
+            </SectionTitle>
+            <div
+              className="project-filters"
+              role="group"
+              aria-label="Filter projects"
+            >
+              {["All", "AI & ML", "Web & systems"].map((f) => (
+                <button
+                  key={f}
+                  aria-pressed={filter === f}
+                  className={filter === f ? "active" : ""}
+                  onClick={() => setFilter(f)}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+            <div className="project-grid">
+              {shown.map((p) => (
+                <article className="project-card" key={p.title}>
+                  <External
+                    className="project-image-link"
+                    href={p.github}
+                    aria-label={`View ${p.title} source on GitHub`}
+                  >
+                    <ProjectArt kind={p.art} />
+                    <span className="project-open">
+                      <ArrowUpRight size={21} />
+                    </span>
+                  </External>
+                  <div className="project-meta">
+                    <span>{p.category}</span>
+                    <span>
+                      {String(selectedProjects.indexOf(p) + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <h3>{p.title}</h3>
+                  <p className="project-description">{p.description}</p>
+                  <div className="project-tags">
+                    {p.tags.map((t) => (
+                      <span key={t}>{t}</span>
+                    ))}
+                  </div>
+                  <div className="project-links">
+                    <External href={p.github}>
+                      View source <ArrowUpRight size={15} />
+                    </External>
+                    {p.demo && (
+                      <External href={p.demo}>
+                        Explore demo <ArrowUpRight size={15} />
+                      </External>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div className="more-work">
+              <div>
+                <h3>More from the workbench</h3>
+                <p>Experiments, foundations, and daily practice.</p>
+              </div>
+              <div className="archive-list">
+                {moreProjects.map((p) => (
+                  <External key={p.title} href={p.github}>
+                    <span>
+                      {p.title}
+                      <small>{p.description}</small>
+                    </span>
+                    <ArrowUpRight size={19} />
+                  </External>
+                ))}
+              </div>
+            </div>
+            <External
+              className="text-link all-repos"
+              href={`${profile.socials.github}?tab=repositories`}
+            >
+              All repositories on GitHub <ArrowUpRight size={17} />
+            </External>
+          </section>
+          <section id="about" className="about-section">
+            <div className="container section">
+              <SectionTitle
+                number="02"
+                label="A LITTLE ABOUT ME"
+                title="Learning by building."
+              />
+              <div className="about-grid">
+                <div className="about-copy">
+                  <p>
+                    I’m <strong>Solanki Om Narendra</strong>, a Computer Science
+                    and AI & ML undergraduate at Jain University, Bengaluru.
+                  </p>
+                  <p>
+                    I enjoy the full journey: understanding a problem,
+                    experimenting with a model, and building an interface that
+                    makes the result useful. My projects span computer vision,
+                    language-model evaluation, security tools, and everyday web
+                    applications.
+                  </p>
+                  <p>
+                    I’m looking for opportunities to learn with thoughtful teams
+                    and contribute to practical machine learning and software
+                    engineering projects.
+                  </p>
+                  <a
+                    className="text-link"
+                    href={profile.resume}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Read my résumé <ArrowUpRight size={17} />
+                  </a>
+                  <div className="language-line">
+                    English <span>·</span> Hindi <span>·</span> Gujarati
+                  </div>
+                </div>
+                <div className="education-list">
+                  <p className="eyebrow">EDUCATION</p>
+                  {education.map((e) => (
+                    <article key={e.institution}>
+                      <span>{e.period || "HIGHER SECONDARY"}</span>
+                      <h3>{e.degree}</h3>
+                      <p>{e.institution}</p>
+                      <small>{e.stat}</small>
+                    </article>
+                  ))}
+                </div>
+              </div>
+              <div className="skills-section">
+                <div>
+                  <p className="eyebrow">TOOLS & TECHNOLOGIES</p>
+                  <h3>What I work with.</h3>
+                </div>
+                <div className="skills-grid">
+                  {skills.map((group) => (
+                    <div key={group.title}>
+                      <h4>{group.title}</h4>
+                      <p>{group.items.join(" · ")}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="experience" className="container section">
+            <SectionTitle
+              number="03"
+              label="THE JOURNEY"
+              title="Experience & involvement."
+            />
+            <div className="timeline">
+              {experience.map((e, i) => (
+                <article key={e.org}>
+                  <span className="timeline-number">0{i + 1}</span>
+                  <div>
+                    <h3>
+                      {e.title} <span>· {e.org}</span>
+                    </h3>
+                    <p>{e.detail}</p>
+                  </div>
+                  <time>{e.period}</time>
+                </article>
+              ))}
+            </div>
+            <div className="hackathon-block">
+              <p className="eyebrow">BEYOND THE CLASSROOM</p>
+              <div>
+                {hackathons.map((h) => (
+                  <article key={h.title}>
+                    <span>{h.period}</span>
+                    <h3>{h.title}</h3>
+                    <p>{h.detail}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+          <section id="contact" className="contact-section">
+            <div className="container section contact-grid">
+              <div>
+                <p className="eyebrow">04 / SAY HELLO</p>
+                <h2>
+                  Good things start
+                  <br />
+                  with a conversation<span>.</span>
+                </h2>
+                <p>
+                  Have an opportunity or an idea to explore?
+                  <br />
+                  I’d love to hear about it.
+                </p>
+                <a className="email-link" href={`mailto:${profile.email}`}>
+                  {profile.email}
+                  <ArrowUpRight size={20} />
+                </a>
+                <div className="contact-socials">
+                  <External href={profile.socials.github}>
+                    GitHub <ArrowUpRight size={15} />
+                  </External>
+                  <External href={profile.socials.linkedin}>
+                    LinkedIn <ArrowUpRight size={15} />
+                  </External>
+                </div>
+              </div>
+              <ContactForm />
+            </div>
+          </section>
+        </main>
+        <footer className="container footer">
+          <a className="wordmark" href="#home">
+            om<span>.</span>
+          </a>
+          <p>© {new Date().getFullYear()} Solanki Om Narendra</p>
+          <button
+            onClick={() => {
+              setIntroKey((k) => k + 1);
+              setIntro(true);
+            }}
+          >
+            Replay intro <ArrowRight size={14} />
+          </button>
+          <a href="#home">Back to top ↑</a>
+        </footer>
+      </div>
+    </>
+  );
 }
