@@ -1,6 +1,6 @@
 # Om Solanki — Portfolio
 
-A light-theme personal portfolio built with React 18, Vite, CSS, and Lucide icons. Features selected work, project filters, education, experience, a résumé link, and a contact form.
+A monochrome personal portfolio built with React 18, Vite, CSS, and Lucide icons. Features selected work, expandable project details, project filters, research interests, education, experience, a résumé link, and a contact form.
 
 ## Develop and build
 
@@ -18,7 +18,7 @@ Vercel settings: framework **Vite**, build command **npm run build**, output dir
 - `src/data/work.js`: featured projects, repository/demo links, additional projects, and skills.
 - `src/data/portfolio.js`: original profile, education, experience, hackathons, contact endpoint, and social links. Legacy components and their old content exports remain for reference but are not rendered by the new app.
 - `src/App.jsx`: page structure, introduction/about copy, filtering, navigation, and form behavior.
-- `src/index.css`: responsive light theme and project illustrations.
+- `src/index.css`: responsive black-and-white theme and project illustrations.
 - `public/profile.jpg` and `public/resume.pdf`: existing photo and résumé.
 - `index.html`: title, description, canonical URL, and sharing metadata.
 

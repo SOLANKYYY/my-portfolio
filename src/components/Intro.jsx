@@ -50,7 +50,7 @@ export default function Intro({ onDone }) {
             1,
             Math.max(0, (elapsed - 1250 - (1 - distance) * 650) / 450),
           );
-        context.fillStyle = `rgba(43,87,72,${appear * (1 - disappear) * 0.32})`;
+        context.fillStyle = `rgba(35,35,35,${appear * (1 - disappear) * 0.32})`;
         context.fillText(cell.value, cell.x, cell.y);
       }
       if (elapsed >= 3400) {

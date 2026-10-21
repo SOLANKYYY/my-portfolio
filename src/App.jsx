@@ -137,6 +137,7 @@ function ProjectArt({ kind }) {
           <span className="art-caption">LUNGLENS / RESEARCH PROTOTYPE</span>
         </>
       )}
+      {kind === "trace" && <><div className="trace-art"><div className="trace-points">{Array.from({length:35},(_,i)=><i key={i} style={{left:`${12+(i*29)%78}%`,top:`${10+(i*17)%75}%`}} />)}</div><span>384 → 50 → 2</span></div><span className="art-caption">TRACELENS / DIMENSIONALITY REDUCTION</span></>}
     </div>
   );
 }
@@ -419,6 +420,7 @@ export default function App() {
                       </External>
                     )}
                   </div>
+                  <details className="project-details"><summary>Inside the project <span aria-hidden="true">+</span></summary><dl>{p.details.map(item=><div key={item.label}><dt>{item.label}</dt><dd>{item.text}</dd></div>)}</dl></details>
                 </article>
               ))}
             </div>
@@ -544,10 +546,11 @@ export default function App() {
               </div>
             </div>
           </section>
+          <section id="exploring" className="exploring-section"><div className="container section"><SectionTitle number="04" label="CONNECTING THE DOTS" title="What keeps me curious."><p>Three themes running through my work, from the first experiment to the finished interface.</p></SectionTitle><div className="focus-grid"><article><span>01 / MODELS</span><h3>From prediction<br/>to understanding.</h3><p>Computer vision becomes more interesting when the output can be inspected. RetinaBridge and LungLens explore inference, visual review, and the limits of what a model can tell us.</p><a href="#projects">Explore the research <ArrowUpRight size={16}/></a></article><article><span>02 / EVIDENCE</span><h3>Test the idea.<br/>Question the result.</h3><p>AgriLens and TraceLens make experiments visible: shared inputs, saved outputs, clear comparisons, and honest evaluation limits. A useful result includes the context behind it.</p><External href="https://github.com/SOLANKYYY/agrilens-llm-benchmark">Read the methodology <ArrowUpRight size={16}/></External></article><article><span>03 / SOFTWARE</span><h3>Make complex work<br/>easier to do.</h3><p>From household schedules to security reports, I’m interested in interfaces that organize real tasks. Flat & Fork and Signal Desk bring data, workflows, and people together.</p><External href="https://github.com/SOLANKYYY/flat-and-fork">Explore the application <ArrowUpRight size={16}/></External></article></div></div></section>
           <section id="contact" className="contact-section">
             <div className="container section contact-grid">
               <div>
-                <p className="eyebrow">04 / SAY HELLO</p>
+                <p className="eyebrow">05 / SAY HELLO</p>
                 <h2>
                   Good things start
                   <br />
