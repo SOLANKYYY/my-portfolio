@@ -31,7 +31,7 @@ export default function Intro({ onDone }) {
       cells = Array.from({ length: cols * rows }, (_, i) => ({
         x: (i % cols) * 86 + 12,
         y: Math.floor(i / cols) * 30 + 20,
-        delay: (((i % cols) + Math.floor(i / cols)) / (cols + rows)) * 1050,
+        delay: (((i % cols) + Math.floor(i / cols)) / (cols + rows)) * 600,
         value: (Math.sin(i * 127.1) * 2).toFixed(4),
       }));
     };
@@ -48,12 +48,12 @@ export default function Intro({ onDone }) {
         const appear = Math.min(1, Math.max(0, (elapsed - cell.delay) / 250)),
           disappear = Math.min(
             1,
-            Math.max(0, (elapsed - 1250 - (1 - distance) * 650) / 450),
+            Math.max(0, (elapsed - 700 - (1 - distance) * 400) / 350),
           );
-        context.fillStyle = `rgba(35,35,35,${appear * (1 - disappear) * 0.32})`;
+        context.fillStyle = `rgba(66,103,160,${appear * (1 - disappear) * 0.23})`;
         context.fillText(cell.value, cell.x, cell.y);
       }
-      if (elapsed >= 3400) {
+      if (elapsed >= 2200) {
         doneRef.current();
         return;
       }

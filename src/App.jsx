@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
   ArrowDown,
@@ -137,7 +137,27 @@ function ProjectArt({ kind }) {
           <span className="art-caption">LUNGLENS / RESEARCH PROTOTYPE</span>
         </>
       )}
-      {kind === "trace" && <><div className="trace-art"><div className="trace-points">{Array.from({length:35},(_,i)=><i key={i} style={{left:`${12+(i*29)%78}%`,top:`${10+(i*17)%75}%`}} />)}</div><span>384 → 50 → 2</span></div><span className="art-caption">TRACELENS / DIMENSIONALITY REDUCTION</span></>}
+      {kind === "trace" && (
+        <>
+          <div className="trace-art">
+            <div className="trace-points">
+              {Array.from({ length: 35 }, (_, i) => (
+                <i
+                  key={i}
+                  style={{
+                    left: `${12 + ((i * 29) % 78)}%`,
+                    top: `${10 + ((i * 17) % 75)}%`,
+                  }}
+                />
+              ))}
+            </div>
+            <span>384 → 50 → 2</span>
+          </div>
+          <span className="art-caption">
+            TRACELENS / DIMENSIONALITY REDUCTION
+          </span>
+        </>
+      )}
     </div>
   );
 }
@@ -214,6 +234,8 @@ function ContactForm() {
   );
 }
 export default function App() {
+  const replayRef = useRef(null);
+  const replaying = useRef(false);
   const [menu, setMenu] = useState(false),
     [filter, setFilter] = useState("All"),
     [introKey, setIntroKey] = useState(0);
@@ -233,7 +255,51 @@ export default function App() {
     } catch {
       /* Storage may be unavailable. */
     }
+    requestAnimationFrame(() => {
+      const target = replaying.current
+        ? replayRef.current
+        : document.getElementById("intro-heading");
+      target?.focus({ preventScroll: true });
+      replaying.current = false;
+    });
   }
+  useEffect(() => {
+    if (
+      intro ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      !("IntersectionObserver" in window)
+    )
+      return;
+    const animations = [];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          if (entry.target.animate)
+            animations.push(
+              entry.target.animate(
+                [
+                  { opacity: 0, transform: "translateY(16px)" },
+                  { opacity: 1, transform: "translateY(0)" },
+                ],
+                { duration: 550, easing: "cubic-bezier(.2,.7,.3,1)" },
+              ),
+            );
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12 },
+    );
+    document
+      .querySelectorAll(
+        ".hero-copy,.portrait-composition,.section-title,.project-card,.about-grid,.timeline article,.focus-grid article",
+      )
+      .forEach((el) => observer.observe(el));
+    return () => {
+      observer.disconnect();
+      animations.forEach((animation) => animation.cancel());
+    };
+  }, [intro, filter]);
   const shown =
     filter === "All"
       ? selectedProjects
@@ -288,17 +354,17 @@ export default function App() {
                 <span className="status-dot" /> AI & ML UNDERGRADUATE ·
                 BENGALURU
               </p>
-              <h1>
-                Curious mind.
+              <h1 id="intro-heading" tabIndex={-1}>
+                Hi, I’m <span className="name-highlight">Om.</span>
                 <br />
-                Thoughtful code.
+                I turn ideas into
                 <br />
-                <span>Useful things.</span>
+                <span className="hero-emphasis">useful software.</span>
               </h1>
               <p className="hero-description">
-                Hi, I’m <strong>Om Solanki.</strong> I explore machine learning,
-                build for the web, and turn ideas into software people can
-                actually use.
+                I’m <strong>Solanki Om Narendra</strong>, an AI & ML
+                undergraduate exploring computer vision, thoughtful interfaces,
+                and software that makes everyday work a little easier.
               </p>
               <div className="hero-actions">
                 <a className="button primary" href="#projects">
@@ -322,7 +388,7 @@ export default function App() {
             </div>
             <div className="portrait-composition">
               <span className="portrait-index">
-                01 / THE PERSON BEHIND THE CODE
+                A LITTLE CURIOSITY GOES A LONG WAY
               </span>
               <div className="portrait-frame">
                 <img
@@ -339,9 +405,9 @@ export default function App() {
               <div className="portrait-note">
                 <span className="asterisk">✳</span>
                 <p>
-                  Always learning.
+                  Learning by doing.
                   <br />
-                  <strong>Always building.</strong>
+                  <strong>One project at a time.</strong>
                 </p>
                 <span className="note-arrow">↗</span>
               </div>
@@ -420,7 +486,19 @@ export default function App() {
                       </External>
                     )}
                   </div>
-                  <details className="project-details"><summary>Inside the project <span aria-hidden="true">+</span></summary><dl>{p.details.map(item=><div key={item.label}><dt>{item.label}</dt><dd>{item.text}</dd></div>)}</dl></details>
+                  <details className="project-details">
+                    <summary>
+                      Inside the project <span aria-hidden="true">+</span>
+                    </summary>
+                    <dl>
+                      {p.details.map((item) => (
+                        <div key={item.label}>
+                          <dt>{item.label}</dt>
+                          <dd>{item.text}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </details>
                 </article>
               ))}
             </div>
@@ -546,7 +624,71 @@ export default function App() {
               </div>
             </div>
           </section>
-          <section id="exploring" className="exploring-section"><div className="container section"><SectionTitle number="04" label="CONNECTING THE DOTS" title="What keeps me curious."><p>Three themes running through my work, from the first experiment to the finished interface.</p></SectionTitle><div className="focus-grid"><article><span>01 / MODELS</span><h3>From prediction<br/>to understanding.</h3><p>Computer vision becomes more interesting when the output can be inspected. RetinaBridge and LungLens explore inference, visual review, and the limits of what a model can tell us.</p><a href="#projects">Explore the research <ArrowUpRight size={16}/></a></article><article><span>02 / EVIDENCE</span><h3>Test the idea.<br/>Question the result.</h3><p>AgriLens and TraceLens make experiments visible: shared inputs, saved outputs, clear comparisons, and honest evaluation limits. A useful result includes the context behind it.</p><External href="https://github.com/SOLANKYYY/agrilens-llm-benchmark">Read the methodology <ArrowUpRight size={16}/></External></article><article><span>03 / SOFTWARE</span><h3>Make complex work<br/>easier to do.</h3><p>From household schedules to security reports, I’m interested in interfaces that organize real tasks. Flat & Fork and Signal Desk bring data, workflows, and people together.</p><External href="https://github.com/SOLANKYYY/flat-and-fork">Explore the application <ArrowUpRight size={16}/></External></article></div></div></section>
+          <section id="exploring" className="exploring-section">
+            <div className="container section">
+              <SectionTitle
+                number="04"
+                label="CONNECTING THE DOTS"
+                title="What keeps me curious."
+              >
+                <p>
+                  Three themes running through my work, from the first
+                  experiment to the finished interface.
+                </p>
+              </SectionTitle>
+              <div className="focus-grid">
+                <article>
+                  <span>01 / MODELS</span>
+                  <h3>
+                    From prediction
+                    <br />
+                    to understanding.
+                  </h3>
+                  <p>
+                    Computer vision becomes more interesting when the output can
+                    be inspected. RetinaBridge and LungLens explore inference,
+                    visual review, and the limits of what a model can tell us.
+                  </p>
+                  <a href="#projects">
+                    Explore the research <ArrowUpRight size={16} />
+                  </a>
+                </article>
+                <article>
+                  <span>02 / EVIDENCE</span>
+                  <h3>
+                    Test the idea.
+                    <br />
+                    Question the result.
+                  </h3>
+                  <p>
+                    AgriLens and TraceLens make experiments visible: shared
+                    inputs, saved outputs, clear comparisons, and honest
+                    evaluation limits. A useful result includes the context
+                    behind it.
+                  </p>
+                  <External href="https://github.com/SOLANKYYY/agrilens-llm-benchmark">
+                    Read the methodology <ArrowUpRight size={16} />
+                  </External>
+                </article>
+                <article>
+                  <span>03 / SOFTWARE</span>
+                  <h3>
+                    Make complex work
+                    <br />
+                    easier to do.
+                  </h3>
+                  <p>
+                    From household schedules to security reports, I’m interested
+                    in interfaces that organize real tasks. Flat & Fork and
+                    Signal Desk bring data, workflows, and people together.
+                  </p>
+                  <External href="https://github.com/SOLANKYYY/flat-and-fork">
+                    Explore the application <ArrowUpRight size={16} />
+                  </External>
+                </article>
+              </div>
+            </div>
+          </section>
           <section id="contact" className="contact-section">
             <div className="container section contact-grid">
               <div>
@@ -584,7 +726,9 @@ export default function App() {
           </a>
           <p>© {new Date().getFullYear()} Solanki Om Narendra</p>
           <button
+            ref={replayRef}
             onClick={() => {
+              replaying.current = true;
               setIntroKey((k) => k + 1);
               setIntro(true);
             }}
