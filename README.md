@@ -26,9 +26,13 @@ Project descriptions are based on their repositories. Medical-image projects are
 
 ## Opening animation
 
-`src/components/Intro.jsx` implements a numerical field that dissolves into Om's name, inspired by [CODING-DARSH/Portfolio](https://github.com/CODING-DARSH/Portfolio). This is an original implementation; no source or assets were copied from that repository, which had no license file at inspection.
+`src/components/Intro.jsx` implements an original particle convergence and name reveal with blue, violet, and cyan light. It evolves the earlier numerical intro inspired by [CODING-DARSH/Portfolio](https://github.com/CODING-DARSH/Portfolio); no source or assets were copied from that repository.
 
-The intro lasts approximately 2.2 seconds, plays once per browser-tab session, can be skipped with the button or Escape, and can be replayed from the footer. Reduced-motion preferences skip it. Animation frames, listeners, and scroll locking are cleaned up on exit.
+The intro lasts approximately 6.2 seconds on desktop and phone, plays once per browser-tab session, can be skipped with the button or Escape, and can be replayed from the footer. Reduced-motion preferences skip it. Animation frames, listeners, and scroll locking are cleaned up on exit. The sequence pauses while the tab is hidden.
+
+## Interactive effects
+
+`src/components/MotionExperience.jsx` and `src/motion.css` add a pointer-responsive hero constellation, soft aurora colours, a fine-pointer cursor halo, project artwork tilt, and a reading progress indicator. The native cursor remains visible. Pointer decoration is clipped to the viewport and disabled on touch devices. Canvas work stops outside the hero or in a hidden tab. The footer's Pause effects control persists the preference; reduced-motion settings also disable motion. Project filters do not replay animations on already-seen sections.
 
 ## Contact
 

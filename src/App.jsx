@@ -19,6 +19,10 @@ import {
 } from "./data/portfolio";
 import { selectedProjects, moreProjects, skills } from "./data/work";
 import Intro from "./components/Intro";
+import {
+  CursorExperience,
+  HeroAtmosphere,
+} from "./components/MotionExperience";
 
 const links = [
   ["Work", "projects"],
@@ -236,6 +240,14 @@ function ContactForm() {
 export default function App() {
   const replayRef = useRef(null);
   const replaying = useRef(false);
+  const revealed = useRef(new WeakSet());
+  const [motionPaused, setMotionPaused] = useState(() => {
+    try {
+      return localStorage.getItem("om-effects-paused") === "1";
+    } catch {
+      return false;
+    }
+  });
   const [menu, setMenu] = useState(false),
     [filter, setFilter] = useState("All"),
     [introKey, setIntroKey] = useState(0);
@@ -243,7 +255,7 @@ export default function App() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
       return false;
     try {
-      return !sessionStorage.getItem("om-intro-seen");
+      return !motionPaused && !sessionStorage.getItem("om-intro-spectra-seen");
     } catch {
       return true;
     }
@@ -251,7 +263,7 @@ export default function App() {
   function finishIntro() {
     setIntro(false);
     try {
-      sessionStorage.setItem("om-intro-seen", "1");
+      sessionStorage.setItem("om-intro-spectra-seen", "1");
     } catch {
       /* Storage may be unavailable. */
     }
@@ -266,6 +278,7 @@ export default function App() {
   useEffect(() => {
     if (
       intro ||
+      motionPaused ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
       !("IntersectionObserver" in window)
     )
@@ -274,7 +287,9 @@ export default function App() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+          if (!entry.isIntersecting || revealed.current.has(entry.target))
+            return;
+          revealed.current.add(entry.target);
           if (entry.target.animate)
             animations.push(
               entry.target.animate(
@@ -295,11 +310,29 @@ export default function App() {
         ".hero-copy,.portrait-composition,.section-title,.project-card,.about-grid,.timeline article,.focus-grid article",
       )
       .forEach((el) => observer.observe(el));
+    const media = matchMedia("(prefers-reduced-motion: reduce)");
+    const stopMotion = () => {
+      if (media.matches) {
+        observer.disconnect();
+        animations.forEach((animation) => animation.cancel());
+      }
+    };
+    media.addEventListener("change", stopMotion);
     return () => {
+      media.removeEventListener("change", stopMotion);
       observer.disconnect();
       animations.forEach((animation) => animation.cancel());
     };
-  }, [intro, filter]);
+  }, [intro, filter, motionPaused]);
+  function toggleMotion() {
+    setMotionPaused((paused) => {
+      const next = !paused;
+      try {
+        localStorage.setItem("om-effects-paused", next ? "1" : "0");
+      } catch {}
+      return next;
+    });
+  }
   const shown =
     filter === "All"
       ? selectedProjects
@@ -307,7 +340,11 @@ export default function App() {
   return (
     <>
       {intro && <Intro key={introKey} onDone={finishIntro} />}
-      <div inert={intro ? "" : undefined}>
+      <CursorExperience enabled={!intro && !motionPaused} />
+      <div
+        inert={intro ? "" : undefined}
+        data-motion={motionPaused || intro ? "paused" : "active"}
+      >
         <a className="skip-link" href="#main">
           Skip to content
         </a>
@@ -349,6 +386,7 @@ export default function App() {
         </header>
         <main id="main">
           <section id="home" className="container hero">
+            <HeroAtmosphere enabled={!intro && !motionPaused} />
             <div className="hero-copy">
               <p className="eyebrow">
                 <span className="status-dot" /> AI & ML UNDERGRADUATE ·
@@ -410,6 +448,11 @@ export default function App() {
                   <strong>One project at a time.</strong>
                 </p>
                 <span className="note-arrow">↗</span>
+              </div>
+              <div className="portrait-orbit" aria-hidden="true">
+                <i />
+                <i />
+                <span />
               </div>
             </div>
           </section>
@@ -725,6 +768,14 @@ export default function App() {
             om<span>.</span>
           </a>
           <p>© {new Date().getFullYear()} Solanki Om Narendra</p>
+          <button
+            onClick={toggleMotion}
+            aria-pressed={!motionPaused}
+            className="motion-toggle"
+          >
+            {motionPaused ? "Resume effects" : "Pause effects"}{" "}
+            <span aria-hidden="true">{motionPaused ? "▶" : "Ⅱ"}</span>
+          </button>
           <button
             ref={replayRef}
             onClick={() => {
