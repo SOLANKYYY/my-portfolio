@@ -17,7 +17,8 @@ import {
   hackathons,
   contact,
 } from "./data/portfolio";
-import { selectedProjects, moreProjects, skills } from "./data/work";
+import { selectedProjects } from "./data/work";
+import { PortfolioOverview, ToolkitGrid, LabProjects, PortfolioQuestions } from "./components/PortfolioDepth";
 import Intro from "./components/Intro";
 import {
   CursorExperience,
@@ -25,9 +26,12 @@ import {
 } from "./components/MotionExperience";
 
 const links = [
+  ["Home", "home"],
   ["Work", "projects"],
   ["About", "about"],
+  ["Skills", "skills"],
   ["Experience", "experience"],
+  ["Lab", "lab"],
   ["Contact", "contact"],
 ];
 function External({ href, children, ...props }) {
@@ -238,6 +242,8 @@ function ContactForm() {
   );
 }
 export default function App() {
+  const [activeSection, setActiveSection] = useState("home");
+  const menuRef = useRef(null);
   const replayRef = useRef(null);
   const replaying = useRef(false);
   const revealed = useRef(new WeakSet());
@@ -260,6 +266,39 @@ export default function App() {
       return true;
     }
   });
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const current = [...links].reverse().find(([, id]) => {
+        const section = document.getElementById(id);
+        return section && section.getBoundingClientRect().top <= 150;
+      });
+      setActiveSection(current?.[1] || "home");
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, []);
+  useEffect(() => {
+    if (!menu) return;
+    const dismiss = (event) => {
+      if (event.key === "Escape") {
+        setMenu(false);
+        menuRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", dismiss);
+    return () => window.removeEventListener("keydown", dismiss);
+  }, [menu]);
   function finishIntro() {
     setIntro(false);
     try {
@@ -307,7 +346,7 @@ export default function App() {
     );
     document
       .querySelectorAll(
-        ".hero-copy,.portrait-composition,.section-title,.project-card,.about-grid,.timeline article,.focus-grid article",
+        ".hero-copy,.portrait-composition,.section-title,.project-card,.about-grid,.timeline article,.focus-grid article,.toolkit-card,.lab-project,.portfolio-overview",
       )
       .forEach((el) => observer.observe(el));
     const media = matchMedia("(prefers-reduced-motion: reduce)");
@@ -354,6 +393,7 @@ export default function App() {
               om<span>.</span>
             </a>
             <button
+              ref={menuRef}
               className="menu-toggle"
               aria-label={menu ? "Close navigation" : "Open navigation"}
               aria-expanded={menu}
@@ -368,7 +408,7 @@ export default function App() {
               aria-label="Main navigation"
             >
               {links.map(([label, id]) => (
-                <a key={id} href={`#${id}`} onClick={() => setMenu(false)}>
+                <a key={id} href={`#${id}`} aria-current={activeSection === id ? "location" : undefined} onClick={() => setMenu(false)}>
                   {label}
                   {id === "contact" && <ArrowUpRight size={15} />}
                 </a>
@@ -465,6 +505,7 @@ export default function App() {
               </p>
             </div>
           </div>
+          <PortfolioOverview />
           <section id="projects" className="container section">
             <SectionTitle
               number="01"
@@ -545,29 +586,10 @@ export default function App() {
                 </article>
               ))}
             </div>
-            <div className="more-work">
-              <div>
-                <h3>More from the workbench</h3>
-                <p>Experiments, foundations, and daily practice.</p>
-              </div>
-              <div className="archive-list">
-                {moreProjects.map((p) => (
-                  <External key={p.title} href={p.github}>
-                    <span>
-                      {p.title}
-                      <small>{p.description}</small>
-                    </span>
-                    <ArrowUpRight size={19} />
-                  </External>
-                ))}
-              </div>
+            <div className="work-next">
+              <p>There’s more on the workbench: smaller experiments, model studies, and algorithm practice.</p>
+              <a className="text-link" href="#lab">Visit the lab <ArrowDown size={16} /></a>
             </div>
-            <External
-              className="text-link all-repos"
-              href={`${profile.socials.github}?tab=repositories`}
-            >
-              All repositories on GitHub <ArrowUpRight size={17} />
-            </External>
           </section>
           <section id="about" className="about-section">
             <div className="container section">
@@ -618,25 +640,17 @@ export default function App() {
                   ))}
                 </div>
               </div>
-              <div className="skills-section">
-                <div>
-                  <p className="eyebrow">TOOLS & TECHNOLOGIES</p>
-                  <h3>What I work with.</h3>
-                </div>
-                <div className="skills-grid">
-                  {skills.map((group) => (
-                    <div key={group.title}>
-                      <h4>{group.title}</h4>
-                      <p>{group.items.join(" · ")}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
+          </section>
+          <section id="skills" className="container section toolkit-section">
+            <SectionTitle number="03" label="TOOLS IN PRACTICE" title="The tools behind the work.">
+              <p>From the first data experiment to the interface around it. Each area connects to something I’ve built.</p>
+            </SectionTitle>
+            <ToolkitGrid />
           </section>
           <section id="experience" className="container section">
             <SectionTitle
-              number="03"
+              number="04"
               label="THE JOURNEY"
               title="Experience & involvement."
             />
@@ -667,10 +681,21 @@ export default function App() {
               </div>
             </div>
           </section>
+          <section id="lab" className="lab-section">
+            <div className="container section">
+              <SectionTitle number="05" label="THE EXPERIMENT LAB" title="Small questions. Deeper dives.">
+                <p>More from the workbench: focused studies in data, models, and the fundamentals that hold everything together.</p>
+              </SectionTitle>
+              <LabProjects />
+              <External className="text-link all-repos" href={`${profile.socials.github}?tab=repositories`}>
+                Browse all repositories <ArrowUpRight size={17} />
+              </External>
+            </div>
+          </section>
           <section id="exploring" className="exploring-section">
             <div className="container section">
               <SectionTitle
-                number="04"
+                number="06"
                 label="CONNECTING THE DOTS"
                 title="What keeps me curious."
               >
@@ -735,7 +760,7 @@ export default function App() {
           <section id="contact" className="contact-section">
             <div className="container section contact-grid">
               <div>
-                <p className="eyebrow">05 / SAY HELLO</p>
+                <p className="eyebrow">07 / SAY HELLO</p>
                 <h2>
                   Good things start
                   <br />
@@ -761,8 +786,15 @@ export default function App() {
               </div>
               <ContactForm />
             </div>
+            <PortfolioQuestions />
           </section>
         </main>
+        <div className="container footer-directory">
+          <div><p className="eyebrow">EXPLORE A LITTLE FURTHER</p><p>Ideas, experiments, and the work in between.</p></div>
+          <nav aria-label="Footer navigation">
+            {links.filter(([, id]) => id !== "home").map(([label, id]) => <a key={id} href={`#${id}`}>{label}</a>)}
+          </nav>
+        </div>
         <footer className="container footer">
           <a className="wordmark" href="#home">
             om<span>.</span>

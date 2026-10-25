@@ -61,35 +61,53 @@ export const selectedProjects = [
 export const moreProjects = [
   {
     title: "TerraSense",
-    description: "Crop recommendation experiments and agricultural data",
+    category: "Applied ML",
+    description:
+      "A soil-and-climate classification lab with browser inference and comparisons of three machine-learning models. Explore dataset patterns and model limitations before drawing conclusions about crops.",
+    tags: ["Python", "Scikit-learn", "Browser inference"],
     github: repo("terrasense-crop-lab"),
   },
   {
     title: "VeraGate",
-    description: "Face recognition and visual authentication",
+    category: "Computer vision",
+    description:
+      "An interactive lab for a dual-threshold face-recognition prototype. The browser simulator explains score boundaries and enrollment steps; the OpenCV recognition pipeline runs locally.",
+    tags: ["OpenCV", "LBPH", "Decision thresholds"],
     github: repo("veragate-face-lab"),
   },
   {
     title: "InboxLens",
-    description: "Message classification with natural language processing",
+    category: "Natural language",
+    description:
+      "A browser-based SMS spam classifier with token explanations and evaluation after message deduplication. Try short messages locally and inspect the evidence and limits behind a result.",
+    tags: ["TF-IDF", "Naive Bayes", "JavaScript"],
     github: repo("inboxlens-message-lab"),
   },
   {
     title: "Health Predictive Analytics",
-    description: "ODE modeling and machine learning",
+    category: "Mathematical modeling",
+    description:
+      "An exploratory project bringing together ODE-based heart-rate simulations and machine-learning classification. Built to study mathematical models and health-data workflows; clinical performance has not been established.",
+    tags: ["Python", "SciPy", "ODE modeling"],
     github: repo(
       "Health-Predictive-Analytics-using-ODE-Modeling-Machine-Learning",
     ),
   },
   {
     title: "LeetCode Solutions",
-    description: "Data structures, algorithms, and problem solving",
+    category: "Problem solving",
+    description:
+      "A collection of coding solutions organized by topic, from arrays and linked lists to trees and dynamic programming. A place to explore approaches, revisit patterns, and strengthen core problem-solving skills.",
+    tags: ["Data structures", "Algorithms", "Dynamic programming"],
     github: repo("LeetCode-Solutions"),
   },
 ];
 export const skills = [
   {
     title: "Machine learning",
+    description:
+      "Working through data preparation, model inference, and evaluation, with interfaces that make predictions and their limitations easier to inspect.",
+    example: { title: "RetinaBridge", href: repo("RetinaBridge") },
     items: [
       "Python",
       "TensorFlow",
@@ -101,6 +119,9 @@ export const skills = [
   },
   {
     title: "Web development",
+    description:
+      "Turning a practical workflow into a responsive application, from the first screen to shared state, authentication, and persistent data.",
+    example: { title: "Flat & Fork", href: repo("flat-and-fork") },
     items: [
       "React",
       "Next.js",
@@ -112,10 +133,16 @@ export const skills = [
   },
   {
     title: "Data & tooling",
+    description:
+      "Organizing records, source material, and review history so an application can connect evidence with the decisions people make.",
+    example: { title: "Signal Desk", href: repo("signal-desk") },
     items: ["SQL", "MySQL", "MongoDB", "Git", "Linux", "Docker"],
   },
   {
     title: "Foundations",
+    description:
+      "Practicing algorithms and data structures alongside the software-design fundamentals that support larger applications.",
+    example: { title: "LeetCode Solutions", href: repo("LeetCode-Solutions") },
     items: [
       "Java",
       "Data structures",

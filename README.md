@@ -1,6 +1,6 @@
 # Om Solanki — Portfolio
 
-A warm, light personal portfolio built with React 18, Vite, CSS, and Lucide icons. Features selected work, expandable project details, project filters, research interests, education, experience, a résumé link, and a contact form.
+A warm, light personal portfolio built with React 18, Vite, CSS, and Lucide icons. Features a seven-link section-aware header, a portfolio overview, selected work with expandable details and filters, an experiment Lab, a dedicated toolkit with example projects, research interests, education, experience, a résumé link, and a contact form with FAQs.
 
 ## Develop and build
 
@@ -19,6 +19,7 @@ Vercel settings: framework **Vite**, build command **npm run build**, output dir
 - `src/data/portfolio.js`: original profile, education, experience, hackathons, contact endpoint, and social links. Legacy components and their old content exports remain for reference but are not rendered by the new app.
 - `src/App.jsx`: page structure, introduction/about copy, filtering, navigation, and form behavior.
 - `src/index.css`: responsive ivory-and-blue theme and project illustrations.
+- `src/components/PortfolioDepth.jsx` and `src/content.css`: overview, toolkit, Lab, FAQs, expanded navigation and footer. Overview counts come from the content data; Lab descriptions are grounded in repository READMEs.
 - `public/profile.jpg` and `public/resume.pdf`: existing photo and résumé.
 - `index.html`: title, description, canonical URL, and sharing metadata.
 
@@ -40,6 +41,6 @@ The form retains the existing Formspree endpoint. It has explicit labels, browse
 
 ## Verification
 
-Production build and browser checks cover layouts at 320, 390, 768, and 1440 pixels; intro completion/skip/replay; reduced motion; session persistence; mobile navigation; project filters; photo/résumé loading; and mocked contact success/failure. No JavaScript runtime errors were observed during those checks.
+Production build and browser checks cover layouts at 320, 390, 768, and 1440 pixels; intro completion/skip/replay; reduced motion; session persistence; mobile navigation and Escape dismissal; section-aware header links; toolkit/Lab anchors and FAQs; project filters; photo/résumé loading; and mocked contact success/failure. No JavaScript runtime errors were observed during those checks.
 
 The current design uses Inter for body text and Manrope for headings, the original full-color portrait, and subtle one-time section entrances. The intro restores keyboard focus after dismissal. Motion is disabled when reduced motion is requested.
