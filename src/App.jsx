@@ -9,6 +9,7 @@ import {
   X,
   MapPin,
   ArrowRight,
+  Search,
 } from "lucide-react";
 import {
   profile,
@@ -17,7 +18,8 @@ import {
   hackathons,
   contact,
 } from "./data/portfolio";
-import { selectedProjects } from "./data/work";
+import { selectedProjects, projectCategories } from "./data/work";
+import { ProjectThumbnail, ProjectPreview } from "./components/ProjectMedia";
 import { PortfolioOverview, ToolkitGrid, LabProjects, PortfolioQuestions } from "./components/PortfolioDepth";
 import Intro from "./components/Intro";
 import {
@@ -51,121 +53,6 @@ function SectionTitle({ number, label, title, children }) {
         <h2>{title}</h2>
       </div>
       {children}
-    </div>
-  );
-}
-function ProjectArt({ kind }) {
-  return (
-    <div className={`project-art art-${kind}`} aria-hidden="true">
-      {kind === "retina" && (
-        <>
-          <div className="orbital-eye">
-            <i />
-            <b />
-          </div>
-          <span className="art-caption">IMAGE → MODEL → EXPLANATION</span>
-        </>
-      )}
-      {kind === "signal" && (
-        <>
-          <div className="signal-window">
-            <div className="window-top">
-              <span /> SIGNAL DESK <small>INTELLIGENCE</small>
-            </div>
-            <div className="signal-layout">
-              <div className="signal-sidebar">
-                Feed
-                <br />
-                Reports
-                <br />
-                Evidence
-              </div>
-              <div className="signal-lines">
-                <strong>Follow the evidence.</strong>
-                <i />
-                <i />
-                <i />
-                <div>
-                  <span>REPORTS</span>
-                  <span>ENTITIES</span>
-                  <span>REVIEW</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <span className="art-caption">COLLECT · INVESTIGATE · REVIEW</span>
-        </>
-      )}
-      {kind === "flat" && (
-        <>
-          <div className="meal-paper">
-            <span>THIS WEEK AT HOME</span>
-            <h4>
-              A little more
-              <br />
-              in sync.
-            </h4>
-            <div>
-              <b>M</b>
-              <b>T</b>
-              <b>W</b>
-              <b>T</b>
-              <b>F</b>
-            </div>
-            <p>Meals planned. Duties shared.</p>
-          </div>
-          <div className="meal-dot" />
-          <span className="art-caption">FLAT & FORK / SHARED LIVING</span>
-        </>
-      )}
-      {kind === "agri" && (
-        <>
-          <div className="agri-lines">
-            {[36, 63, 48, 85, 58, 94, 72].map((h, i) => (
-              <div key={i} style={{ height: `${h}%` }}>
-                <i />
-              </div>
-            ))}
-          </div>
-          <span className="agri-label">
-            Same soil.
-            <br />
-            <em>Different reasoning.</em>
-          </span>
-          <span className="art-caption">AGRILENS / LOCAL LLM BENCHMARK</span>
-        </>
-      )}
-      {kind === "lung" && (
-        <>
-          <div className="lung-grid">
-            <div />
-            <div />
-            <span>+</span>
-          </div>
-          <span className="art-caption">LUNGLENS / RESEARCH PROTOTYPE</span>
-        </>
-      )}
-      {kind === "trace" && (
-        <>
-          <div className="trace-art">
-            <div className="trace-points">
-              {Array.from({ length: 35 }, (_, i) => (
-                <i
-                  key={i}
-                  style={{
-                    left: `${12 + ((i * 29) % 78)}%`,
-                    top: `${10 + ((i * 17) % 75)}%`,
-                  }}
-                />
-              ))}
-            </div>
-            <span>384 → 50 → 2</span>
-          </div>
-          <span className="art-caption">
-            TRACELENS / DIMENSIONALITY REDUCTION
-          </span>
-        </>
-      )}
     </div>
   );
 }
@@ -242,6 +129,8 @@ function ContactForm() {
   );
 }
 export default function App() {
+  const [query, setQuery] = useState("");
+  const [previewProject, setPreviewProject] = useState(null);
   const [activeSection, setActiveSection] = useState("home");
   const menuRef = useRef(null);
   const replayRef = useRef(null);
@@ -362,7 +251,7 @@ export default function App() {
       observer.disconnect();
       animations.forEach((animation) => animation.cancel());
     };
-  }, [intro, filter, motionPaused]);
+  }, [intro, filter, query, motionPaused]);
   function toggleMotion() {
     setMotionPaused((paused) => {
       const next = !paused;
@@ -372,14 +261,21 @@ export default function App() {
       return next;
     });
   }
-  const shown =
-    filter === "All"
-      ? selectedProjects
-      : selectedProjects.filter((p) => p.category === filter);
+  const searchTerm = query.trim().toLowerCase();
+  const shown = selectedProjects.filter((project) => {
+    const matchesCategory = filter === "All" || project.categories.includes(filter);
+    const searchable = [project.title, project.description, ...project.tags, ...project.categories].join(" ").toLowerCase();
+    return matchesCategory && (!searchTerm || searchable.includes(searchTerm));
+  });
+  function resetProjects() {
+    setFilter("All");
+    setQuery("");
+  }
   return (
     <>
       {intro && <Intro key={introKey} onDone={finishIntro} />}
-      <CursorExperience enabled={!intro && !motionPaused} />
+      <CursorExperience enabled={!intro && !motionPaused && !previewProject} />
+      <ProjectPreview project={previewProject} onClose={() => setPreviewProject(null)} />
       <div
         inert={intro ? "" : undefined}
         data-motion={motionPaused || intro ? "paused" : "active"}
@@ -515,43 +411,39 @@ export default function App() {
               <p>
                 A selection of research prototypes and practical applications.
                 <br />
-                Built to learn. Documented to share.
+                Real interfaces. Open source. Built to explore.
               </p>
             </SectionTitle>
-            <div
-              className="project-filters"
-              role="group"
-              aria-label="Filter projects"
-            >
-              {["All", "AI & ML", "Web & systems"].map((f) => (
-                <button
-                  key={f}
-                  aria-pressed={filter === f}
-                  className={filter === f ? "active" : ""}
-                  onClick={() => setFilter(f)}
-                >
-                  {f}
-                </button>
-              ))}
+            <div className="project-toolbar">
+              <div className="project-filters" role="group" aria-label="Filter projects">
+                {projectCategories.map((category) => (
+                  <button key={category} aria-pressed={filter === category} className={filter === category ? "active" : ""} onClick={() => setFilter(category)}>
+                    {category}<span aria-hidden="true">{category === "All" ? selectedProjects.length : selectedProjects.filter(p => p.categories.includes(category)).length}</span>
+                  </button>
+                ))}
+              </div>
+              <label className="project-search">
+                <Search size={17} aria-hidden="true" />
+                <span className="sr-only">Search projects</span>
+                <input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Search a project or technology…" />
+              </label>
             </div>
+            <div className="project-results">
+              <p role="status" aria-live="polite">{shown.length} of {selectedProjects.length} featured projects{filter !== "All" ? ` · ${filter}` : ""}</p>
+              <span>Open a screenshot for a closer look <ArrowUpRight size={14} aria-hidden="true" /></span>
+            </div>
+            {shown.length === 0 && <div className="project-empty">
+              <Search size={25} aria-hidden="true" /><h3>No projects found.</h3>
+              <p>Try a different keyword or category, or explore the smaller experiments in the Lab.</p>
+              <button className="button primary" onClick={resetProjects}>Reset search & filters</button>
+            </div>}
             <div className="project-grid">
               {shown.map((p) => (
                 <article className="project-card" key={p.title}>
-                  <External
-                    className="project-image-link"
-                    href={p.github}
-                    aria-label={`View ${p.title} source on GitHub`}
-                  >
-                    <ProjectArt kind={p.art} />
-                    <span className="project-open">
-                      <ArrowUpRight size={21} />
-                    </span>
-                  </External>
+                  <ProjectThumbnail project={p} onPreview={() => setPreviewProject(p)} />
                   <div className="project-meta">
                     <span>{p.category}</span>
-                    <span>
-                      {String(selectedProjects.indexOf(p) + 1).padStart(2, "0")}
-                    </span>
+                    <span className="project-availability"><i aria-hidden="true" />{p.art === "lung" ? "Interface demo" : p.demo ? "Demo available" : "Source available"}</span>
                   </div>
                   <h3>{p.title}</h3>
                   <p className="project-description">{p.description}</p>
@@ -561,11 +453,11 @@ export default function App() {
                     ))}
                   </div>
                   <div className="project-links">
-                    <External href={p.github}>
-                      View source <ArrowUpRight size={15} />
+                    <External href={p.github} aria-label={`View ${p.title} source on GitHub`}>
+                      <Github size={15} /> View source
                     </External>
                     {p.demo && (
-                      <External href={p.demo}>
+                      <External href={p.demo} aria-label={`Explore ${p.title} demo`}>
                         Explore demo <ArrowUpRight size={15} />
                       </External>
                     )}
@@ -686,7 +578,7 @@ export default function App() {
               <SectionTitle number="05" label="THE EXPERIMENT LAB" title="Small questions. Deeper dives.">
                 <p>More from the workbench: focused studies in data, models, and the fundamentals that hold everything together.</p>
               </SectionTitle>
-              <LabProjects />
+              <LabProjects onPreview={setPreviewProject} />
               <External className="text-link all-repos" href={`${profile.socials.github}?tab=repositories`}>
                 Browse all repositories <ArrowUpRight size={17} />
               </External>

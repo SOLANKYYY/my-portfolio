@@ -15,15 +15,16 @@ Vercel settings: framework **Vite**, build command **npm run build**, output dir
 
 ## Updating content
 
-- `src/data/work.js`: featured projects, repository/demo links, additional projects, and skills.
+- `src/data/work.js`: featured projects, overlapping category filters, screenshot metadata, verified repository/demo links, additional projects, and skills.
 - `src/data/portfolio.js`: original profile, education, experience, hackathons, contact endpoint, and social links. Legacy components and their old content exports remain for reference but are not rendered by the new app.
 - `src/App.jsx`: page structure, introduction/about copy, filtering, navigation, and form behavior.
-- `src/index.css`: responsive ivory-and-blue theme and project illustrations.
+- `src/index.css`: responsive ivory-and-blue base theme.
+- `src/components/ProjectMedia.jsx` and `src/projects.css`: real screenshot cards, browser-frame styling, category/search controls, and a native dialog for larger previews. Images are local and lazy loaded; Escape closes a preview and restores focus.
 - `src/components/PortfolioDepth.jsx` and `src/content.css`: overview, toolkit, Lab, FAQs, expanded navigation and footer. Overview counts come from the content data; Lab descriptions are grounded in repository READMEs.
 - `public/profile.jpg` and `public/resume.pdf`: existing photo and résumé.
 - `index.html`: title, description, canonical URL, and sharing metadata.
 
-Project descriptions are based on their repositories. Medical-image projects are research demonstrations; no clinical performance claims are made. Abstract project artwork is illustrative, not a screenshot of the applications.
+Project descriptions are based on their repositories. Medical-image projects are research demonstrations; no clinical performance claims are made. Project cards show actual screenshots of the public project interfaces or repository documentation. Image provenance is recorded in `public/projects/SOURCES.md`. Screenshots are previews of the UI, not evidence of production or clinical readiness.
 
 ## Opening animation
 
@@ -44,3 +45,7 @@ The form retains the existing Formspree endpoint. It has explicit labels, browse
 Production build and browser checks cover layouts at 320, 390, 768, and 1440 pixels; intro completion/skip/replay; reduced motion; session persistence; mobile navigation and Escape dismissal; section-aware header links; toolkit/Lab anchors and FAQs; project filters; photo/résumé loading; and mocked contact success/failure. No JavaScript runtime errors were observed during those checks.
 
 The current design uses Inter for body text and Manrope for headings, the original full-color portrait, and subtle one-time section entrances. The intro restores keyboard focus after dismissal. Motion is disabled when reduced motion is requested.
+
+## Project browsing
+
+Seven filters (All, AI & ML, Computer vision, LLMs, Web apps, Cybersecurity, Data science) support projects with overlapping subjects. Keyword search covers titles, descriptions, categories, and technologies, with result counts and an empty-state reset. Six featured screenshots and three Lab previews can be enlarged with keyboard-accessible native dialogs. Public demos are linked where checked; Signal Desk keeps its source link because its deployment was inaccessible during verification.

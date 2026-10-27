@@ -1,6 +1,8 @@
 import { ArrowUpRight, ArrowDown, BrainCircuit, Code2, Database, Braces } from "lucide-react";
 import { selectedProjects, moreProjects, skills } from "../data/work";
 
+import { ProjectThumbnail } from "./ProjectMedia";
+
 const skillIcons = [BrainCircuit, Code2, Database, Braces];
 
 export function PortfolioOverview() {
@@ -32,12 +34,12 @@ export function ToolkitGrid() {
   </div>;
 }
 
-export function LabProjects() {
+export function LabProjects({ onPreview }) {
   return <div className="lab-projects">
     {moreProjects.map((project, index) => <article className="lab-project" key={project.title}>
-      <span className="lab-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+      {project.image ? <div className="lab-thumbnail"><ProjectThumbnail project={project} compact onPreview={() => onPreview(project)} /></div> : <span className="lab-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>}
       <div className="lab-title"><p className="eyebrow">{project.category}</p><h3><a href={project.github} target="_blank" rel="noopener noreferrer">{project.title}<ArrowUpRight size={19} /></a></h3></div>
-      <div className="lab-description"><p>{project.description}</p><ul className="lab-tags" aria-label={`${project.title} topics`}>{project.tags.map(tag => <li key={tag}>{tag}</li>)}</ul></div>
+      <div className="lab-description"><p>{project.description}</p><ul className="lab-tags" aria-label={`${project.title} topics`}>{project.tags.map(tag => <li key={tag}>{tag}</li>)}</ul>{project.demo && <a className="lab-demo-link" href={project.demo} target="_blank" rel="noopener noreferrer">Explore demo <ArrowUpRight size={14} /></a>}</div>
     </article>)}
   </div>;
 }
