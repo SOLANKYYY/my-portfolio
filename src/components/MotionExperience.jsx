@@ -190,14 +190,14 @@ export function HeroAtmosphere({ enabled }) {
           pointer.y * p.speed,
       }));
       positions.forEach((p, i) => {
-        ctx.fillStyle = i % 3 ? "rgba(70,111,194,.28)" : "rgba(142,101,206,.3)";
+        ctx.fillStyle = i % 3 ? "rgba(120,63,82,.25)" : "rgba(173,87,59,.28)";
         ctx.beginPath();
         ctx.arc(p.x, p.y, i % 4 === 0 ? 2.3 : 1.4, 0, Math.PI * 2);
         ctx.fill();
         positions.slice(i + 1).forEach((q) => {
           const d = Math.hypot(p.x - q.x, p.y - q.y);
           if (d < 100) {
-            ctx.strokeStyle = `rgba(91,128,193,${(1 - d / 100) * 0.12})`;
+            ctx.strokeStyle = `rgba(146,89,98,${(1 - d / 100) * 0.12})`;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(q.x, q.y);

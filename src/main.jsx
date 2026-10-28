@@ -5,6 +5,8 @@ import "./index.css";
 import "./motion.css";
 import "./content.css";
 import "./projects.css";
+import "./header.css";
+import "./theme.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

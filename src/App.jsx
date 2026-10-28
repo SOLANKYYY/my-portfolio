@@ -4,9 +4,6 @@ import {
   ArrowDown,
   Github,
   Linkedin,
-  Download,
-  Menu,
-  X,
   MapPin,
   ArrowRight,
   Search,
@@ -22,6 +19,7 @@ import { selectedProjects, projectCategories } from "./data/work";
 import { ProjectThumbnail, ProjectPreview } from "./components/ProjectMedia";
 import { PortfolioOverview, ToolkitGrid, LabProjects, PortfolioQuestions } from "./components/PortfolioDepth";
 import Intro from "./components/Intro";
+import SiteHeader from "./components/SiteHeader";
 import {
   CursorExperience,
   HeroAtmosphere,
@@ -132,7 +130,6 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [previewProject, setPreviewProject] = useState(null);
   const [activeSection, setActiveSection] = useState("home");
-  const menuRef = useRef(null);
   const replayRef = useRef(null);
   const replaying = useRef(false);
   const revealed = useRef(new WeakSet());
@@ -143,8 +140,7 @@ export default function App() {
       return false;
     }
   });
-  const [menu, setMenu] = useState(false),
-    [filter, setFilter] = useState("All"),
+  const [filter, setFilter] = useState("All"),
     [introKey, setIntroKey] = useState(0);
   const [intro, setIntro] = useState(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
@@ -177,17 +173,6 @@ export default function App() {
       window.removeEventListener("resize", schedule);
     };
   }, []);
-  useEffect(() => {
-    if (!menu) return;
-    const dismiss = (event) => {
-      if (event.key === "Escape") {
-        setMenu(false);
-        menuRef.current?.focus();
-      }
-    };
-    window.addEventListener("keydown", dismiss);
-    return () => window.removeEventListener("keydown", dismiss);
-  }, [menu]);
   function finishIntro() {
     setIntro(false);
     try {
@@ -283,43 +268,7 @@ export default function App() {
         <a className="skip-link" href="#main">
           Skip to content
         </a>
-        <header className="site-header">
-          <div className="container nav-wrap">
-            <a className="wordmark" href="#home" aria-label="Om Solanki home">
-              om<span>.</span>
-            </a>
-            <button
-              ref={menuRef}
-              className="menu-toggle"
-              aria-label={menu ? "Close navigation" : "Open navigation"}
-              aria-expanded={menu}
-              aria-controls="main-nav"
-              onClick={() => setMenu(!menu)}
-            >
-              {menu ? <X /> : <Menu />}
-            </button>
-            <nav
-              id="main-nav"
-              className={menu ? "nav open" : "nav"}
-              aria-label="Main navigation"
-            >
-              {links.map(([label, id]) => (
-                <a key={id} href={`#${id}`} aria-current={activeSection === id ? "location" : undefined} onClick={() => setMenu(false)}>
-                  {label}
-                  {id === "contact" && <ArrowUpRight size={15} />}
-                </a>
-              ))}
-            </nav>
-            <a
-              className="nav-resume"
-              href={profile.resume}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Résumé <Download size={15} />
-            </a>
-          </div>
-        </header>
+        <SiteHeader links={links} activeSection={activeSection} disabled={intro} onPreview={setPreviewProject} />
         <main id="main">
           <section id="home" className="container hero">
             <HeroAtmosphere enabled={!intro && !motionPaused} />
@@ -336,9 +285,8 @@ export default function App() {
                 <span className="hero-emphasis">useful software.</span>
               </h1>
               <p className="hero-description">
-                I’m <strong>Solanki Om Narendra</strong>, an AI & ML
-                undergraduate exploring computer vision, thoughtful interfaces,
-                and software that makes everyday work a little easier.
+                <span className="desktop-description">I’m <strong>Solanki Om Narendra</strong>, an AI & ML undergraduate exploring computer vision, thoughtful interfaces, and software that makes everyday work a little easier.</span>
+                <span className="mobile-description">I build practical AI experiments and web apps—from the first model to the final interface.</span>
               </p>
               <div className="hero-actions">
                 <a className="button primary" href="#projects">
@@ -376,6 +324,7 @@ export default function App() {
                   SOLANKI
                 </span>
               </div>
+              <div className="portrait-mobile-bio"><span className="eyebrow">THE PERSON BEHIND THE CODE</span><h2>Om Solanki.</h2><p>AI & ML undergraduate<br />Jain University, Bengaluru</p><a href="#about">A little about me <ArrowUpRight size={15} /></a></div>
               <div className="portrait-note">
                 <span className="asterisk">✳</span>
                 <p>
