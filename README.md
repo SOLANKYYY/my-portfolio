@@ -1,6 +1,6 @@
 # Om Solanki — Portfolio
 
-A warm, light personal portfolio built with React 18, Vite, CSS, and Lucide icons. Features a seven-link section-aware header, a portfolio overview, selected work with expandable details and filters, an experiment Lab, a dedicated toolkit with example projects, research interests, education, experience, a résumé link, and a contact form with FAQs.
+A soft-grey personal portfolio built with React 18, Vite, CSS, and Lucide icons. Features a seven-link section-aware header, a portfolio overview, selected work with expandable details and filters, an experiment Lab, a dedicated toolkit with example projects, research interests, education, experience, a résumé link, and a contact form with FAQs.
 
 ## Develop and build
 
@@ -28,13 +28,13 @@ Project descriptions are based on their repositories. Medical-image projects are
 
 ## Opening animation
 
-`src/components/Intro.jsx` implements an original particle convergence and name reveal with plum, copper, and warm amber light. It evolves the earlier numerical intro inspired by [CODING-DARSH/Portfolio](https://github.com/CODING-DARSH/Portfolio); no source or assets were copied from that repository.
+`src/components/Intro.jsx` implements an original particle convergence and name reveal with restrained slate-grey particles and light. It evolves the earlier numerical intro inspired by [CODING-DARSH/Portfolio](https://github.com/CODING-DARSH/Portfolio); no source or assets were copied from that repository.
 
 The intro lasts approximately 6.2 seconds on desktop and phone, plays once per browser-tab session, can be skipped with the button or Escape, and can be replayed from the footer. Reduced-motion preferences skip it. Animation frames, listeners, and scroll locking are cleaned up on exit. The sequence pauses while the tab is hidden.
 
 ## Interactive effects
 
-`src/components/MotionExperience.jsx` and `src/motion.css` add a pointer-responsive hero constellation, soft aurora colours, a fine-pointer cursor halo, project artwork tilt, and a reading progress indicator. The native cursor remains visible. Pointer decoration is clipped to the viewport and disabled on touch devices. Canvas work stops outside the hero or in a hidden tab. The footer's Pause effects control persists the preference; reduced-motion settings also disable motion. Project filters do not replay animations on already-seen sections.
+`src/components/MotionExperience.jsx` and `src/motion.css` provide a fine-pointer cursor halo, project artwork tilt, and a reading progress indicator. The native cursor remains visible. Pointer decoration is clipped to the viewport and disabled on touch devices. The footer's Pause effects control persists the preference; reduced-motion settings also disable motion. Project filters do not replay animations on already-seen sections.
 
 ## Contact
 
@@ -44,7 +44,7 @@ The form retains the existing Formspree endpoint. It has explicit labels, browse
 
 Production build and browser checks cover layouts at 320, 390, 768, and 1440 pixels; intro completion/skip/replay; reduced motion; session persistence; mobile navigation and Escape dismissal; section-aware header links; toolkit/Lab anchors and FAQs; project filters; photo/résumé loading; and mocked contact success/failure. No JavaScript runtime errors were observed during those checks.
 
-The current design uses warm ivory surfaces, deep plum ink, wine accents, and copper highlights. It uses Inter for body text and Manrope for headings, the original full-color portrait, and subtle one-time section entrances. The intro restores keyboard focus after dismissal. Motion is disabled when reduced motion is requested.
+The selected design uses soft-grey surfaces, white cards, graphite text and restrained slate accents. DM Sans leads the new introduction, with the original full-color portrait and subtle one-time section entrances. The first three project shortcuts open the existing screenshot preview dialog. The intro restores keyboard focus after dismissal. Motion is disabled when reduced motion is requested.
 
 ## Project browsing
 
@@ -54,4 +54,4 @@ Seven filters (All, AI & ML, Computer vision, LLMs, Web apps, Cybersecurity, Dat
 
 `src/components/SiteHeader.jsx` adds a floating responsive header, a native-dialog mobile menu with section descriptions and résumé/social shortcuts, and a quick-search dialog opened by the header or Ctrl/Cmd K. Search covers sections, project titles, categories, technologies, descriptions, and the résumé. Screenshot results open the existing project preview. Escape closes dialogs, focus is restored, and body scrolling is unlocked before a second dialog opens.
 
-`src/header.css` contains header and phone layout rules, including concise mobile introduction copy and a compact portrait/bio card. `src/theme.css` is imported last and supplies the complete warm ivory, plum, wine, and copper palette. Original photos and project screenshots retain their natural colours. Canvas particles use the same palette. No theme toggle or external search service is needed.
+`src/components/PortfolioHero.jsx` contains the chosen split-card introduction, natural portrait, social links and project shortcuts. `src/header.css` defines header interactions; `src/theme.css` supplies the neutral palette and matching intro/cursor colours; `src/selected-layout.css` is imported last and defines the chosen layout and phone breakpoints. Original photos and project screenshots retain their natural colours. There is one selected theme and no external search service.

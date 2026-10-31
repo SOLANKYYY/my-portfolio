@@ -26,7 +26,7 @@ export default function Intro({ onDone }) {
       angle: i * 2.39996,
       radius: 0.22 + ((i * 37) % 80) / 100,
       size: 1 + (i % 3) * 0.6,
-      hue: [335, 19, 36][i % 3],
+      hue: [211, 215, 220][i % 3],
     }));
     const resize = () => {
       width = innerWidth;
@@ -55,12 +55,12 @@ export default function Intro({ onDone }) {
           exit * 180;
         const x = width / 2 + Math.cos(angle) * r,
           y = height / 2 + Math.sin(angle) * r * 0.72;
-        ctx.fillStyle = `hsla(${p.hue},45%,48%,${alpha * (0.3 + (i % 4) * 0.13)})`;
+        ctx.fillStyle = `hsla(${p.hue},18%,48%,${alpha * (0.3 + (i % 4) * 0.13)})`;
         ctx.beginPath();
         ctx.arc(x, y, p.size, 0, Math.PI * 2);
         ctx.fill();
         if (i % 4 === 0) {
-          ctx.strokeStyle = `hsla(${p.hue},38%,55%,${alpha * 0.16})`;
+          ctx.strokeStyle = `hsla(${p.hue},16%,55%,${alpha * 0.16})`;
           ctx.lineWidth = 0.8;
           ctx.beginPath();
           ctx.moveTo(x, y);

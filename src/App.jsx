@@ -4,7 +4,6 @@ import {
   ArrowDown,
   Github,
   Linkedin,
-  MapPin,
   ArrowRight,
   Search,
 } from "lucide-react";
@@ -20,9 +19,9 @@ import { ProjectThumbnail, ProjectPreview } from "./components/ProjectMedia";
 import { PortfolioOverview, ToolkitGrid, LabProjects, PortfolioQuestions } from "./components/PortfolioDepth";
 import Intro from "./components/Intro";
 import SiteHeader from "./components/SiteHeader";
+import PortfolioHero from "./components/PortfolioHero";
 import {
   CursorExperience,
-  HeroAtmosphere,
 } from "./components/MotionExperience";
 
 const links = [
@@ -220,7 +219,7 @@ export default function App() {
     );
     document
       .querySelectorAll(
-        ".hero-copy,.portrait-composition,.section-title,.project-card,.about-grid,.timeline article,.focus-grid article,.toolkit-card,.lab-project,.portfolio-overview",
+        ".builder-intro,.builder-profile,.opening-projects,.section-title,.project-card,.about-grid,.timeline article,.focus-grid article,.toolkit-card,.lab-project,.portfolio-overview",
       )
       .forEach((el) => observer.observe(el));
     const media = matchMedia("(prefers-reduced-motion: reduce)");
@@ -270,86 +269,7 @@ export default function App() {
         </a>
         <SiteHeader links={links} activeSection={activeSection} disabled={intro} onPreview={setPreviewProject} />
         <main id="main">
-          <section id="home" className="container hero">
-            <HeroAtmosphere enabled={!intro && !motionPaused} />
-            <div className="hero-copy">
-              <p className="eyebrow">
-                <span className="status-dot" /> AI & ML UNDERGRADUATE ·
-                BENGALURU
-              </p>
-              <h1 id="intro-heading" tabIndex={-1}>
-                Hi, I’m <span className="name-highlight">Om.</span>
-                <br />
-                I turn ideas into
-                <br />
-                <span className="hero-emphasis">useful software.</span>
-              </h1>
-              <p className="hero-description">
-                <span className="desktop-description">I’m <strong>Solanki Om Narendra</strong>, an AI & ML undergraduate exploring computer vision, thoughtful interfaces, and software that makes everyday work a little easier.</span>
-                <span className="mobile-description">I build practical AI experiments and web apps—from the first model to the final interface.</span>
-              </p>
-              <div className="hero-actions">
-                <a className="button primary" href="#projects">
-                  Explore my work <ArrowDown size={17} />
-                </a>
-                <a className="text-link" href={`mailto:${profile.email}`}>
-                  Let’s talk <ArrowUpRight size={17} />
-                </a>
-              </div>
-              <div className="hero-socials">
-                <External href={profile.socials.github}>
-                  <Github size={17} /> GitHub
-                </External>
-                <External href={profile.socials.linkedin}>
-                  <Linkedin size={17} /> LinkedIn
-                </External>
-                <span className="hero-location">
-                  <MapPin size={15} /> Bengaluru, India
-                </span>
-              </div>
-            </div>
-            <div className="portrait-composition">
-              <span className="portrait-index">
-                A LITTLE CURIOSITY GOES A LONG WAY
-              </span>
-              <div className="portrait-frame">
-                <img
-                  src={profile.photo}
-                  alt="Solanki Om Narendra"
-                  fetchPriority="high"
-                />
-                <span className="portrait-corner">
-                  OM
-                  <br />
-                  SOLANKI
-                </span>
-              </div>
-              <div className="portrait-mobile-bio"><span className="eyebrow">THE PERSON BEHIND THE CODE</span><h2>Om Solanki.</h2><p>AI & ML undergraduate<br />Jain University, Bengaluru</p><a href="#about">A little about me <ArrowUpRight size={15} /></a></div>
-              <div className="portrait-note">
-                <span className="asterisk">✳</span>
-                <p>
-                  Learning by doing.
-                  <br />
-                  <strong>One project at a time.</strong>
-                </p>
-                <span className="note-arrow">↗</span>
-              </div>
-              <div className="portrait-orbit" aria-hidden="true">
-                <i />
-                <i />
-                <span />
-              </div>
-            </div>
-          </section>
-          <div className="focus-strip">
-            <div className="container">
-              <span>EXPLORING THE INTERSECTION OF</span>
-              <p>
-                Machine learning <i /> Computer vision <i /> Software
-                engineering
-              </p>
-            </div>
-          </div>
+          <PortfolioHero onPreview={setPreviewProject} />
           <PortfolioOverview />
           <section id="projects" className="container section">
             <SectionTitle

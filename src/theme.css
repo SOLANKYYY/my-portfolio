@@ -1,157 +1,94 @@
-/* Warm ivory, plum ink, and copper details. Keep this palette after component styles. */
+/* Selected soft-grey design: neutral surfaces with restrained slate accents. */
 :root {
-  color-scheme: light;
-  --paper: #f8f4ee;
-  --ink: #482d3e;
-  --muted: #6e5f64;
-  --accent: #783f52;
-  --copper: #ad573b;
-  --line: #decec9;
-  --surface: #fffdf9;
-  --surface-rose: #f2e6e5;
-  --surface-clay: #f0e5db;
-  --accent-soft: #ebd9df;
-  background: var(--paper);
-  color: var(--ink);
+ --scheme: light; --paper: #f2f3f4; --ink: #282d35; --muted: #626b77;
+ --accent: #43556b; --secondary: #596b80; --surface: #ffffff;
+ --line: #dce0e5; --soft: #e9ecef; --tint: #e6ebf0; --on: #ffffff;
+ font-family: "DM Sans", "Inter", sans-serif;
 }
-body { background: var(--paper); color: var(--ink); }
-::selection { background: #e6c6cc; color: #3f2534; }
-button:focus-visible, a:focus-visible, summary:focus-visible { outline-color: var(--accent); }
-input, textarea { accent-color: var(--accent); }
-.wordmark, .hero h1 .name-highlight, .hero-description strong,
-.about-copy > p:first-child, .project-empty h3 { color: var(--ink); }
-.wordmark span, .eyebrow { color: var(--accent); }
-.hero-description, .hero-socials, .hero-location, .portrait-index,
-.section-title > p, .project-description, .project-meta { color: var(--muted); }
-.hero h1 .hero-emphasis {
-  color: var(--accent);
-  background-image: linear-gradient(100deg, #6e334a 0%, #8b4155 32%, #a45039 65%, #6e334a 100%);
-}
-.status-dot { background: var(--copper); box-shadow: 0 0 0 4px #ad573b12; }
-.aurora-blue { background: radial-gradient(circle, #d5a39440, transparent 68%); }
-.aurora-violet { background: radial-gradient(circle, #c899b231, transparent 68%); }
-.aurora-peach { background: radial-gradient(circle, #dcaa7529, transparent 68%); }
-.hero-grid {
-  background-image: linear-gradient(#783f5209 1px, transparent 1px), linear-gradient(90deg, #783f5209 1px, transparent 1px);
-}
-.primary {
-  color: #fffdf9;
-  background: linear-gradient(110deg, #783f52, #8d4e4a);
-  box-shadow: 0 5px 18px #783f5220;
-}
-.primary:hover { color: #fffdf9; background: linear-gradient(110deg, #663345, #7e403c); }
-.text-link, .project-links a, .lab-demo-link, .email-link { color: var(--accent); }
-.text-link:hover, .project-links a:hover, .lab-demo-link:hover,
-.hero-socials a:hover, .contact-socials a:hover { color: #562c3d; }
-.portrait-frame {
-  border-color: #fffdf9cc;
-  box-shadow: 13px 16px 0 #ebdfd9, 0 20px 40px #633e4a15;
-}
-.portrait-composition:hover .portrait-frame {
-  box-shadow: 13px 16px 0 #e9d8db, 0 22px 45px #783f521e;
-}
-.portrait-corner { background: #482d3e80; color: #fffdf9; }
-.portrait-note { color: var(--ink); background: #fff9ef; border-color: #dfcab8; box-shadow: 0 6px 20px #633e4a0c; }
-.portrait-note .asterisk, .portrait-note .note-arrow { color: var(--copper); }
-.portrait-orbit { border-color: #a66c8255; }
-.portrait-orbit i { background: #9a5b76; box-shadow: 0 0 0 7px #9a5b7615; }
-.portrait-orbit i:nth-child(2) { background: #b87754; box-shadow: 0 0 0 6px #b8775415; }
-.portrait-orbit > span { background: linear-gradient(135deg, #c58c77, #bc869d); }
-.focus-strip { color: var(--ink); background: #eee2dc; border-color: #e1cec6; }
-.focus-strip span { color: #775c5d; }
-.focus-strip i { background: #b58a86; }
-.overview-number { color: var(--accent); }
-.work-next { background: var(--surface-rose); }
-.project-card, .toolkit-card { background: var(--surface); border-color: var(--line); }
-.project-card:hover { border-color: #c4a0aa; box-shadow: 0 10px 32px #783f5214; }
-.project-tags span { color: #725a61; background: #f6efeb; border-color: #e7d7d1; }
-.project-filters button { color: #705761; background: var(--surface); border-color: var(--line); }
-.project-filters button > span { color: #7d626a; border-color: #decec9; }
-.project-filters button.active { color: #fffdf9; background: var(--accent); border-color: var(--accent); }
-.project-filters button.active > span { color: #f8e9ed; border-color: #ffffff40; }
-.project-search { color: #805e6a; background: var(--surface); border-color: #b99e9f; }
-.project-search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px #783f5216; }
-.project-search input { color: var(--ink); }
-.project-search input::placeholder { color: #7a686e; }
-.project-results, .project-card .project-availability { color: #795864; }
-.project-availability i { background: #aa6d7d; }
-.project-empty { color: var(--muted); border-color: #bba0a2; background: #fcf8f3; }
-.project-details summary:focus-visible { outline-color: var(--accent); }
-.project-media {
-  color: #76545e;
-  background: radial-gradient(ellipse at 15% 20%, #fae7da, transparent 65%), linear-gradient(135deg, #e4c6c1, #f0e4e1 58%, #d8becb);
-}
-.media-signal { background: radial-gradient(ellipse at 80% 10%, #e7d3dc, transparent 55%), linear-gradient(140deg, #d9c1cd, #ecdcd4); }
-.media-flat { background: radial-gradient(ellipse at 20% 10%, #fff0d9, transparent 60%), linear-gradient(140deg, #ecd6c8, #d8b8a9); }
-.media-agri { background: radial-gradient(ellipse at 20% 0%, #f9efdd, transparent 60%), linear-gradient(135deg, #e3d2b9, #e6c9c7); }
-.media-lung { background: linear-gradient(135deg, #e1cbd3, #f4e9e5 55%, #d9b9c5); }
-.media-trace { background: radial-gradient(ellipse at 70% 30%, #d1abbc, transparent 60%), linear-gradient(135deg, #e9d9db, #c7a7b8); }
-.media-lab { background: linear-gradient(135deg, #e6cfc7, #eee0db); }
-.browser-preview { background: var(--surface); border-color: #fffdf9ad; box-shadow: 0 18px 28px #482d3e20, 0 3px 8px #482d3e12; }
-.browser-chrome { color: #775e66; background: #fff9f2; border-color: #e6d5cd; }
-.browser-dots i { background: #baa0a5; }
-.screenshot-caption { color: #583642; }
-.project-open, .project-media .project-open { color: var(--accent); background: #fffdf9e6; border-color: #fffdf9; }
-.project-media:focus-visible { outline-color: var(--accent); }
-.project-preview-dialog { color: var(--ink); border-color: #dbc5c7; box-shadow: 0 30px 100px #482d3e40; }
-.project-preview-dialog::backdrop { background: #32232ca6; }
-.preview-close { color: var(--accent); background: var(--surface); border-color: #d7bec4; }
-.preview-image-scroll { border-color: #dbc5c7; background: #ede0dc; }
-.preview-image-scroll:focus-visible { outline-color: var(--accent); }
-.preview-footer > p { color: var(--muted); }
-.preview-footer a:not(.primary) { color: var(--accent); }
-.about-section { background: #f1e9e3; border-color: var(--line); }
-.education-list, .skills-section { border-color: #d8c4bd; }
-.toolkit-heading .eyebrow { color: #815f6d; }
-.toolkit-icon { background: #f0dde3; color: #783f52; }
-.toolkit-card:nth-child(2) .toolkit-icon { background: #eadde7; color: #75425f; }
-.toolkit-card:nth-child(3) .toolkit-icon { background: #f3dfd3; color: #934f36; }
-.toolkit-card:nth-child(4) .toolkit-icon { background: #f2e6d3; color: #855e32; }
-.toolkit-tags li { background: #f5eeea; color: #71585f; }
-.toolkit-example { color: var(--accent); }
-.toolkit-example small { color: #765e67; }
-.toolkit-example:hover { color: #562c3d; }
-.timeline-number { color: #8b6471; }
-.lab-section { background: #f5ece5; border-color: var(--line); }
-.lab-projects, .lab-project { border-color: #ddc9c0; }
-.lab-index, .lab-title .eyebrow { color: #85606a; }
-.lab-title a:hover { color: var(--accent); }
-.lab-description p { color: var(--muted); }
-.lab-tags li { color: #7a4d5c; }
-.lab-tags li + li::before { color: #a88186; }
-.exploring-section { color: var(--ink); background: #efe1d8; }
-.exploring-section .eyebrow, .focus-grid article > span { color: #8e503d; }
-.exploring-section .section-title > p, .focus-grid p { color: #715e60; }
-.focus-grid, .focus-grid article + article { border-color: #d9beb0; }
-.focus-grid a { color: var(--accent); border-color: #cba6ad; }
-.exploring-section a:focus-visible { outline-color: var(--accent); }
-.contact-section { background: #f0e3e1; border-color: #ddc8c4; }
-.contact-form label { color: var(--ink); }
-.contact-form input, .contact-form textarea { color: var(--ink); background: var(--surface); border-color: #a88985; caret-color: var(--accent); }
-.contact-form input::placeholder, .contact-form textarea::placeholder { color: #79676a; opacity: 1; }
-.contact-form input:focus, .contact-form textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #783f5218; }
-.form-status.success { color: #625337; }
-.form-status.error { color: #913b39; }
-.portfolio-questions, .question-list details { border-color: #d9bfbe; }
-.question-list summary span { color: var(--accent); }
-.question-list summary:focus-visible { outline-color: var(--accent); }
-.footer-directory nav a:hover { color: var(--accent); }
-.footer { color: var(--muted); }
-.skip-link { color: var(--ink); background: var(--surface); }
-.reading-progress > span { background: linear-gradient(90deg, #783f52, #b36d6a, #ad573b); }
-.cursor-halo:before { background: radial-gradient(circle, #b36d7f1c, #c18a660c 45%, transparent 70%); }
-.cursor-ring:before { border-color: #92536baa; }
-.cursor-ring.is-link:before { background: #a75f7910; border-color: #a75f79aa; }
+:root { color-scheme:var(--scheme); background:var(--paper); color:var(--ink); --copper:var(--accent); --surface-rose:var(--soft); --surface-clay:var(--soft); --accent-soft:var(--tint); }
+body {background:var(--paper);color:var(--ink)}
+::selection {background:var(--accent);color:var(--on)}
+h1,h2,h3,h4,.wordmark,.hero-description strong,.about-copy > p:first-child {color:var(--ink)}
+.header-shell {background:color-mix(in srgb,var(--surface) 92%,transparent);border-color:var(--line);box-shadow:0 8px 28px #00000008}
+.brand-mark {background:var(--ink);color:var(--paper)} .brand-mark > span{color:var(--secondary)}
+.desktop-nav a:hover,.header-search:hover,.header-menu:hover{background:var(--soft)}
+.desktop-nav a[aria-current="location"] {background:var(--accent);color:var(--on);box-shadow:none}
+.header-search kbd {background:var(--soft);border-color:var(--line)}
+.header-contact {background:var(--surface);border-color:var(--line);color:var(--accent)}
+.header-contact:hover{background:var(--tint)}
+.hero h1 .name-highlight{color:var(--ink)}
+.hero h1 .hero-emphasis {color:var(--accent);background-image:linear-gradient(110deg,var(--accent),var(--secondary));-webkit-text-fill-color:transparent}
+.aurora-blue {background:radial-gradient(circle,color-mix(in srgb,var(--accent) 13%,transparent),transparent 68%)}
+.aurora-violet {background:radial-gradient(circle,color-mix(in srgb,var(--secondary) 10%,transparent),transparent 68%)}
+.aurora-peach {background:none}
+.hero-grid {background-image:linear-gradient(color-mix(in srgb,var(--accent) 5%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--accent) 5%,transparent) 1px,transparent 1px)}
+.status-dot{background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 8%,transparent)}
+.primary,.primary:hover {color:var(--on);background:var(--accent);box-shadow:0 5px 18px color-mix(in srgb,var(--accent) 12%,transparent)}
+.text-link,.project-links a,.lab-demo-link,.email-link {color:var(--accent)}
+.text-link:hover,.project-links a:hover,.lab-demo-link:hover,.hero-socials a:hover,.contact-socials a:hover{color:var(--ink)}
+.portrait-frame,.portrait-composition:hover .portrait-frame{border-color:var(--surface);background:var(--soft);box-shadow:13px 16px 0 var(--tint),0 20px 40px #0000000c}
+.portrait-note {color:var(--ink);background:var(--surface);border-color:var(--line);box-shadow:0 6px 20px #00000008}
+.portrait-note .asterisk,.portrait-note .note-arrow {color:var(--accent)}
+.portrait-corner{background:#10203388;color:#fff}
+.portrait-orbit{border-color:color-mix(in srgb,var(--accent) 25%,transparent)}
+.portrait-orbit i,.portrait-orbit i:nth-child(2){background:var(--accent);box-shadow:0 0 0 7px color-mix(in srgb,var(--accent) 8%,transparent)}
+.portrait-orbit > span{background:linear-gradient(135deg,var(--accent),var(--secondary))}
+.focus-strip {color:var(--ink);background:var(--soft);border-color:var(--line)}
+.focus-strip span{color:var(--muted)}.focus-strip i{background:var(--accent)}
+.overview-number{color:var(--accent)}
+.project-card,.toolkit-card{background:var(--surface);border-color:var(--line)}
+.project-card:hover{border-color:var(--accent);box-shadow:0 10px 32px #00000010}
+.project-tags span,.toolkit-tags li{color:var(--muted);background:var(--soft);border-color:var(--line)}
+.project-filters button{color:var(--muted);background:var(--surface);border-color:var(--line)}
+.project-filters button>span{color:var(--muted);border-color:var(--line)}
+.project-filters button.active{color:var(--on);background:var(--accent);border-color:var(--accent)}
+.project-filters button.active>span{color:var(--on);border-color:color-mix(in srgb,var(--on) 35%,transparent)}
+.project-search{color:var(--muted);background:var(--surface);border-color:var(--line)}
+.project-search input{color:var(--ink)}.project-search input::placeholder{color:var(--muted)}
+.project-results,.project-card .project-availability{color:var(--muted)}.project-availability i{background:var(--accent)}
+.project-empty{color:var(--muted);background:var(--surface);border-color:var(--line)}
+.project-media,.media-signal,.media-flat,.media-agri,.media-lung,.media-trace,.media-lab{color:var(--muted);background:linear-gradient(135deg,var(--tint),var(--soft))}
+.browser-preview{background:var(--surface);border-color:var(--line);box-shadow:0 18px 28px #00000020}
+.browser-chrome{color:var(--muted);background:var(--surface);border-color:var(--line)}.browser-dots i{background:var(--line)}
+.screenshot-caption{color:var(--ink)}.project-open,.project-media .project-open{color:var(--accent);background:var(--surface);border-color:var(--line)}
+.about-section,.lab-section,.contact-section{color:var(--ink);background:var(--soft);border-color:var(--line)}
+.education-list,.skills-section,.lab-projects,.lab-project,.focus-grid,.focus-grid article+article,.portfolio-questions,.question-list details{border-color:var(--line)}
+.toolkit-heading .eyebrow,.toolkit-example small,.timeline-number,.lab-index,.lab-title .eyebrow{color:var(--muted)}
+.toolkit-icon,.toolkit-card:nth-child(n) .toolkit-icon{background:var(--tint);color:var(--accent)}
+.toolkit-example,.toolkit-example:hover,.lab-tags li,.focus-grid a,.question-list summary span{color:var(--accent)}
+.lab-tags li+li::before{color:var(--muted)}
+.exploring-section{color:var(--ink);background:var(--tint)}
+.exploring-section .eyebrow,.focus-grid article>span{color:var(--accent)}
+.exploring-section .section-title>p,.focus-grid p{color:var(--muted)}.focus-grid a{border-color:var(--line)}
+.contact-form input,.contact-form textarea{color:var(--ink);background:var(--surface);border-color:var(--line)}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:var(--muted)}
+.footer,.footer .motion-controls{color:var(--muted)}
+.header-dialog,.project-preview-dialog{color:var(--ink);background:var(--paper);border-color:var(--line)}
+.header-dialog::backdrop,.project-preview-dialog::backdrop{background:#0b1528b0}
+.header-close,.preview-close,.mobile-navigation a,.command-input{color:var(--ink);background:var(--surface);border-color:var(--line)}
+.mobile-navigation a[aria-current="location"],.menu-shortcuts>div a,.header-close:hover,.command-results a:hover,.command-results button:hover{background:var(--tint);border-color:var(--line)}
+.command-input input::placeholder{color:var(--muted)}.preview-image-scroll{background:var(--soft);border-color:var(--line)}
+.reading-progress>span{background:var(--accent)}
+@media(max-width:700px){.hero .portrait-composition{background:var(--surface);border-color:var(--line)}.hero .portrait-frame{box-shadow:none}}
+
+/* Keep the six-second intro and pointer effects in the selected palette. */
 .intro-spectra { background: var(--paper); }
-.intro-lights i { background: radial-gradient(circle, #d9aaa265, transparent 64%); }
-.intro-lights i:nth-child(2) { background: radial-gradient(circle, #d2a1b64f, transparent 64%); }
-.intro-lights i:nth-child(3) { background: radial-gradient(circle, #ddb18038, transparent 64%); }
-.intro-spectra .intro-name > span { color: #815567; }
-.intro-spectra .intro-name strong { background-image: linear-gradient(110deg, #643246, #925064, #a45039); }
-.intro-spectra .intro-name p { color: var(--muted); }
-.intro-disciplines { color: #81636f; }
-.intro-disciplines i { background: #b18c98; }
-.intro-spectra > button { color: var(--ink); border-color: #d2b8bf; background: #fffdf9c9; }
-.intro-spectra .intro-bottom, .intro-message { color: #7d5c68; }
-.intro-progress { background: #e7d7d2; }
-.intro-progress > span { background: linear-gradient(90deg, #783f52, #b36d6a, #ad573b); }
+.intro-lights i { background: radial-gradient(circle,#a6b3c22b,transparent 64%); }
+.intro-lights i:nth-child(2) { background: radial-gradient(circle,#b9c2cb25,transparent 64%); }
+.intro-lights i:nth-child(3) { background: radial-gradient(circle,#c1c7cd22,transparent 64%); }
+.intro-spectra .intro-name > span, .intro-spectra .intro-name p,
+.intro-disciplines, .intro-spectra .intro-bottom, .intro-message { color: var(--muted); }
+.intro-spectra .intro-name strong { font-family: "DM Sans",sans-serif; background-image: linear-gradient(110deg,#282d35,#596b80,#43556b); }
+.intro-disciplines i { background: #87919c; }
+.intro-spectra > button { color: var(--ink); border-color: var(--line); background: #ffffffd9; }
+.intro-progress { background: var(--line); }
+.intro-progress > span, .reading-progress > span { background: var(--accent); }
+.cursor-halo:before { background: radial-gradient(circle,#8393a315,#a4b0bb08 45%,transparent 70%); }
+.cursor-ring:before { border-color: #65778b99; }
+.cursor-ring.is-link:before { background: #65778b0d; border-color: #65778baa; }
+.project-image-link:after { background: radial-gradient(circle at var(--shine-x,50%) var(--shine-y,50%),#ffffff3b,transparent 65%); }
+.project-search:focus-within,.command-input:focus-within,.contact-form input:focus,.contact-form textarea:focus { border-color: var(--accent); box-shadow:0 0 0 3px #43556b14; outline-color: #43556b14; }
+.hero-socials, .contact-form label { color: var(--ink); }
+.form-status.success { color:#415d4a; }.form-status.error { color:#9b3f3f; }
+.skip-link { color: var(--ink); background: var(--surface); }
+.footer-directory nav a:hover { color: var(--accent); }
